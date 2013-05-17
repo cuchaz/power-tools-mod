@@ -26,6 +26,9 @@ public class PowerTools
 	public static final ItemDrillShaft ItemDrillShaft = new ItemDrillShaft( 7309 );
 	public static final ItemDrillWideBore ItemDrillWideBore = new ItemDrillWideBore( 7310 );
 	
+	// block registration: use ids [1150,1154]
+	public static final BlockOilRefinery BlockOilRefinery = new BlockOilRefinery( 1150 );
+	
 	@PreInit
 	public void preInit( FMLPreInitializationEvent event )
 	{
@@ -35,16 +38,28 @@ public class PowerTools
 	@Init
 	public void load( FMLInitializationEvent event )
 	{
-		// item names
+		// register stuff
+		GameRegistry.registerItem( ItemOil, "oil" );
+		GameRegistry.registerItem( ItemDrillShaft, "drillShaft" );
+		GameRegistry.registerItem( ItemDrillWideBore, "drillWideBore" );
+		
+		GameRegistry.registerBlock( BlockOilRefinery, "oilRefinery" );
+		
+		GameRegistry.registerTileEntity( TileEntityOilRefinery.class, "oilRefinery" );
+		
+		// name stuff
 		LanguageRegistry.addName( ItemOil, "Oil" );
 		LanguageRegistry.addName( ItemDrillShaft, "Shaft Drill" );
 		LanguageRegistry.addName( ItemDrillWideBore, "Wide-Bore Drill" );
+		
+		LanguageRegistry.addName( BlockOilRefinery, "Oil Refinery" );
 		
 		ItemStack coalStack = new ItemStack( Item.coal );
 		ItemStack waterStack = new ItemStack( Item.bucketWater );
 		ItemStack ironStack = new ItemStack( Item.ingotIron );
 		ItemStack stickStack = new ItemStack( Item.stick );
 		ItemStack redstoneStack = new ItemStack( Item.redstone );
+		ItemStack oilStack = new ItemStack( ItemOil );
 		
 		// crafting recipes
 		
@@ -74,6 +89,14 @@ public class PowerTools
 			'x', redstoneStack,
 			'y', ironStack,
 			'z', stickStack
+		);
+		
+		// oil refinery
+		GameRegistry.addRecipe(
+			new ItemStack( BlockOilRefinery ),
+			"xxx", "xyx", "xxx",
+			'x', ironStack,
+			'y', oilStack
 		);
 	}
 	
