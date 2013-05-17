@@ -7,7 +7,6 @@ import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.PostInit;
 import cpw.mods.fml.common.Mod.PreInit;
-import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -21,9 +20,6 @@ public class PowerTools
 {
 	@Instance( "cuchaz.powerTools" )
 	public static PowerTools m_instance;
-	
-	@SidedProxy( clientSide="cuchaz.powerTools.client.ClientProxy", serverSide="cuchaz.powerTools.server.ServerProxy" )
-	public static BaseProxy m_proxy;
 	
 	// item registration: use ids [7308,7319]
 	public static final ItemOil ItemOil = new ItemOil( 7308 );
