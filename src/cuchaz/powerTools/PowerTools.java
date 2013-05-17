@@ -15,7 +15,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @Mod( modid="cuchaz.powerTools", name="Power Tools", version="0.0.1" )
-@NetworkMod( clientSideRequired=true, serverSideRequired=false )
+@NetworkMod( clientSideRequired=true, serverSideRequired=true )
 public class PowerTools
 {
 	@Instance( "cuchaz.powerTools" )
@@ -24,11 +24,12 @@ public class PowerTools
 	// item registration: use ids [7308,7319]
 	public static final ItemOil ItemOil = new ItemOil( 7308 );
 	public static final ItemDrillShaft ItemDrillShaft = new ItemDrillShaft( 7309 );
+	public static final ItemDrillWideBore ItemDrillWideBore = new ItemDrillWideBore( 7310 );
 	
 	@PreInit
 	public void preInit( FMLPreInitializationEvent event )
 	{
-		// UNDONE: implement me
+		// nothing to do
 	}
 	
 	@Init
@@ -37,6 +38,7 @@ public class PowerTools
 		// item names
 		LanguageRegistry.addName( ItemOil, "Oil" );
 		LanguageRegistry.addName( ItemDrillShaft, "Shaft Drill" );
+		LanguageRegistry.addName( ItemDrillWideBore, "Wide-Bore Drill" );
 		
 		ItemStack coalStack = new ItemStack( Item.coal );
 		ItemStack waterStack = new ItemStack( Item.bucketWater );
@@ -66,11 +68,18 @@ public class PowerTools
 			'y', ironStack,
 			'z', stickStack
 		);
+		GameRegistry.addRecipe(
+			new ItemStack( ItemDrillWideBore, 1 ),
+			"yxx", "yyy", "yzz",
+			'x', redstoneStack,
+			'y', ironStack,
+			'z', stickStack
+		);
 	}
 	
 	@PostInit
 	public void postInit( FMLPostInitializationEvent event )
 	{
-		// UNDOME: implement me
+		// nothing to do
 	}
 }
