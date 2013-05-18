@@ -16,6 +16,8 @@ public class BlockOilRefinery extends BlockContainer
 	@SideOnly( Side.CLIENT )
 	private Icon m_iconFront;
 	@SideOnly( Side.CLIENT )
+	private Icon m_iconSide;
+	@SideOnly( Side.CLIENT )
 	private Icon m_iconTop;
 	
 	protected BlockOilRefinery( int blockId )
@@ -31,9 +33,30 @@ public class BlockOilRefinery extends BlockContainer
 	
 	@Override
 	@SideOnly( Side.CLIENT )
-	public Icon getIcon( int par1, int par2 )
+	public Icon getIcon( int side, int meta )
 	{
-		return par1 == 1 ? m_iconTop : ( par1 == 0 ? m_iconTop : ( par1 != par2 ? blockIcon : m_iconFront ) );
+		final int Bottom = 0;
+		final int Top = 1;
+		final int East = 2;
+		final int West = 3;
+		final int North = 4;
+		final int South = 5;
+		
+		// UNDONE: use metadata to store the "front" side
+		// NOTE: for now, front is always north
+		switch( side )
+		{
+			case Top: return m_iconTop;
+			
+			case North: return m_iconFront;
+			
+			case East:
+			case West: return m_iconSide;
+			
+			case South:
+			case Bottom:
+			default: return blockIcon;
+		}
 	}
 	
 	@Override
@@ -42,8 +65,9 @@ public class BlockOilRefinery extends BlockContainer
 	{
 		// UNDONE: can change textures here based on state
 		// UNDONE: actually make these textures
-		blockIcon = iconRegister.registerIcon( "powerTools:oilRefinerySide" );
+		blockIcon = iconRegister.registerIcon( "powerTools:oilRefineryBack" );
 		m_iconFront = iconRegister.registerIcon( "powerTools:oilRefineryFront" );
+		m_iconSide = iconRegister.registerIcon( "powerTools:oilRefinerySide" );
 		m_iconTop = iconRegister.registerIcon( "powerTools:oilRefineryTop" );
 	}
 }

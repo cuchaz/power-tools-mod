@@ -25,8 +25,8 @@ public class ItemDrillWideBore extends ItemDrill
 	@Override
 	public List<ChunkCoordinates> getOtherBlocksToDig( World world, int blockId, int x, int y, int z, int side, EntityPlayer player )
 	{
-		final int YPos = 0; // top
-		final int YNeg = 1; // bottom
+		final int YNeg = 0; // bottom
+		final int YPos = 1; // top
 		final int ZPos = 2; // east
 		final int ZNeg = 3; // west
 		final int XPos = 4; // north
