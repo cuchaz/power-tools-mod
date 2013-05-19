@@ -28,11 +28,6 @@ public class ItemDrillShaft extends ItemDrill
 	@Override
 	public List<ChunkCoordinates> getOtherBlocksToDig( World world, int blockId, int x, int y, int z, int side, EntityPlayer player )
 	{
-		final int ZPos = 2; // east
-		final int ZNeg = 3; // west
-		final int XPos = 4; // north
-		final int XNeg = 5; // south
-		
 		// is the block closer to our feet or our eyes?
 		double entityFeetPosY = player.getPosition( 1.0f ).yCoord;
 		double entityEyesPosY = entityFeetPosY + player.getEyeHeight();
@@ -45,9 +40,9 @@ public class ItemDrillShaft extends ItemDrill
 		List<ChunkCoordinates> blocksToDig = new ArrayList<ChunkCoordinates>();
 		for( int i=0; i<DigDepth; i++ )
 		{
-			switch( side )
+			switch( BlockSide.getById( side ) )
 			{
-				case ZPos:
+				case East:
 					if( i > 0 )
 					{
 						blocksToDig.add( new ChunkCoordinates( x, y, z+i ) );
@@ -55,7 +50,7 @@ public class ItemDrillShaft extends ItemDrill
 					blocksToDig.add( new ChunkCoordinates( x, y+yDelta, z+i ) );
 				break;
 				
-				case ZNeg:
+				case West:
 					if( i > 0 )
 					{
 						blocksToDig.add( new ChunkCoordinates( x, y, z-i ) );
@@ -63,7 +58,7 @@ public class ItemDrillShaft extends ItemDrill
 					blocksToDig.add( new ChunkCoordinates( x, y+yDelta, z-i ) );
 				break;
 				
-				case XPos:
+				case North:
 					if( i > 0 )
 					{
 						blocksToDig.add( new ChunkCoordinates( x+i, y, z ) );
@@ -71,7 +66,7 @@ public class ItemDrillShaft extends ItemDrill
 					blocksToDig.add( new ChunkCoordinates( x+i, y+yDelta, z ) );
 				break;
 				
-				case XNeg:
+				case South:
 					if( i > 0 )
 					{
 						blocksToDig.add( new ChunkCoordinates( x-i, y, z ) );

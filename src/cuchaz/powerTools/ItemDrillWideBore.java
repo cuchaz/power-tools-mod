@@ -25,13 +25,6 @@ public class ItemDrillWideBore extends ItemDrill
 	@Override
 	public List<ChunkCoordinates> getOtherBlocksToDig( World world, int blockId, int x, int y, int z, int side, EntityPlayer player )
 	{
-		final int YNeg = 0; // bottom
-		final int YPos = 1; // top
-		final int ZPos = 2; // east
-		final int ZNeg = 3; // west
-		final int XPos = 4; // north
-		final int XNeg = 5; // south
-		
 		// make the 8-block pattern (like the 9-block pattern, but skip 0,0)
 		int[] dim1 = { -1, -1, -1, 0, /*0,*/ 0, 1, 1, 1 };
 		int[] dim2 = { -1, 0, 1, -1, /*0,*/ 1, -1, 0, 1};
@@ -40,20 +33,20 @@ public class ItemDrillWideBore extends ItemDrill
 		List<ChunkCoordinates> blocksToDig = new ArrayList<ChunkCoordinates>();
 		for( int i=0; i<dim1.length; i++ )
 		{
-			switch( side )
+			switch( BlockSide.getById( side ) )
 			{
-				case XPos:
-				case XNeg:
+				case North:
+				case South:
 					blocksToDig.add( new ChunkCoordinates( x, y + dim1[i], z + dim2[i] ) );
 				break;
 				
-				case YPos:
-				case YNeg:
+				case Top:
+				case Bottom:
 					blocksToDig.add( new ChunkCoordinates( x + dim1[i], y, z + dim2[i] ) );
 				break;
 				
-				case ZPos:
-				case ZNeg:
+				case East:
+				case West:
 					blocksToDig.add( new ChunkCoordinates( x + dim1[i], y + dim2[i], z ) );
 				break;
 			}
