@@ -9,6 +9,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
@@ -87,6 +88,7 @@ public class BlockOilRefinery extends BlockContainer
 		m_iconTop = iconRegister.registerIcon( "powerTools:oilRefineryTop" );
 	}
 	
+	@Override
 	public void onBlockPlacedBy( World world, int x, int y, int z, EntityLiving entityUser, ItemStack itemStack )
     {
 		//final int FlagCauseBlockUpdate = 1;

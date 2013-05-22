@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 
@@ -29,17 +31,52 @@ public class TileEntityOilRefinery extends TileEntity
 		return m_inventory;
 	}
 	
-	public boolean isUseableByPlayer( EntityPlayer player )
+	@Override
+	public void readFromNBT( NBTTagCompound nbt )
 	{
-		if( worldObj.getBlockTileEntity( xCoord, yCoord, zCoord ) != this )
+		super.readFromNBT( nbt );
+		
+		// load the items
+		NBTTagList tagList = nbt.getTagList( "items" );
+		for( int i=0; i<tagList.tagCount(); i++ )
 		{
-			return false;
+			NBTTagCompound itemNbt = (NBTTagCompound)tagList.tagAt( i );
+			byte slot = itemNbt.getByte( "slot" );
+			if( slot >= 0 && slot < m_inventory.getSizeInventory() )
+			{
+				m_inventory.setInventorySlotContents( slot, ItemStack.loadItemStackFromNBT( itemNbt ) );
+			}
 		}
-
-		return player.getDistanceSq( xCoord + 0.5, yCoord + 0.5, zCoord + 0.5 ) <= 64;
+		
+		// UNDONE: load other state
 	}
 	
-	// UNDONE: implement save state stuff
+	@Override
+	public void writeToNBT( NBTTagCompound nbt )
+	{
+		super.writeToNBT( nbt );
+		
+		// save the items
+		NBTTagList tagList = new NBTTagList();
+		for( int i=0; i<m_inventory.getSizeInventory(); i++ )
+		{
+			// get the item stack
+			ItemStack itemStack = m_inventory.getStackInSlot( i );
+			if( itemStack == null )
+			{
+				continue;
+			}
+			
+			// write it
+			NBTTagCompound itemNbt = new NBTTagCompound();
+			itemNbt.setByte( "slot", (byte)i );
+			itemStack.writeToNBT( itemNbt );
+			tagList.appendTag( itemNbt );
+		}
+        nbt.setTag( "items", tagList );
+        
+        // UNDONE: write other state
+	}
 	
 	private boolean isDelayedUpdate( )
 	{
@@ -58,9 +95,6 @@ public class TileEntityOilRefinery extends TileEntity
 		
 		// UNDONE: handle coal processing
 		
-		// TEMP
-		System.out.println( "Update: " + ( isPowered() ? "Powered!" : "Not powered... =(" ) );
-		
 		// get the wheel frame
 		int meta = worldObj.getBlockMetadata( xCoord, yCoord, zCoord );
 		int oldWheelFrame = BlockOilRefinery.getMetaWheelFrame( meta );
@@ -76,9 +110,6 @@ public class TileEntityOilRefinery extends TileEntity
 		// update the metadata if needed
 		if( newWheelFrame != oldWheelFrame )
 		{
-			// TEMP
-			System.out.println( "Setting wheel frame to: " + newWheelFrame + " (" + BlockOilRefinery.computeMeta( BlockOilRefinery.getMetaRotation( meta ), newWheelFrame ) + ")" );
-			
 			final int FlagSendChangeToClients = 2;
 			worldObj.setBlockMetadataWithNotify(
 				xCoord, yCoord, zCoord,
@@ -107,17 +138,21 @@ public class TileEntityOilRefinery extends TileEntity
 		}
 		
 		// does either side have a flowing water block?
-		int targetId = Block.waterStill.blockID;
 		for( ChunkCoordinates coords : blocks )
 		{
-			if( worldObj.getBlockId( coords.posX, coords.posY, coords.posZ ) != targetId )
-			{
-				continue;
-			}
+			int blockId = worldObj.getBlockId( coords.posX, coords.posY, coords.posZ );
 			
-			// is the block flowing? (meta 1-8 indicates flowing water)
-			if( worldObj.getBlockMetadata( coords.posX, coords.posY, coords.posZ ) > 0 )
+			if( blockId == Block.waterStill.blockID )
 			{
+				// is the block flowing? (meta 1-8 indicates flowing water)
+				if( worldObj.getBlockMetadata( coords.posX, coords.posY, coords.posZ ) > 0 )
+				{
+					return true;
+				}
+			}
+			else if( blockId == Block.waterMoving.blockID )
+			{
+				// moving water is really falling water, or water that is changing depths
 				return true;
 			}
 		}
