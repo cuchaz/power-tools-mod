@@ -23,17 +23,31 @@ public class TileEntityOilRefinery extends TileEntity
 	private InventoryBasic m_inventory;
 	private int m_delayCounter;
 	private int m_processingTimer;
+	private int m_wheelFrame;
+	private int m_oilFrame;
 	
 	public TileEntityOilRefinery( )
 	{
 		m_inventory = new InventoryBasic( InventoryName, false, InventorySize );
 		m_delayCounter = 0;
 		m_processingTimer = 0;
+		m_wheelFrame = 0;
+		m_oilFrame = 0;
 	}
 	
 	public IInventory getInventory( )
 	{
 		return m_inventory;
+	}
+	
+	public int getWheelFrame( )
+	{
+		return m_wheelFrame;
+	}
+	
+	public int getOilFrame( )
+	{
+		return m_oilFrame;
 	}
 	
 	@Override
@@ -89,17 +103,55 @@ public class TileEntityOilRefinery extends TileEntity
 	@Override
 	public void updateEntity( )
 	{
+		// the client never has any inventory!!
+		// we have to do all the processing on the server
+		if( worldObj.isRemote )
+		{
+			return;
+		}
+		
 		if( isDelayedUpdate() )
 		{
-			updateCoalProcessing();
-			updateWheels();
+			boolean isPowered = isPowered();
+			updateWheels( isPowered );
+			updateCoalProcessing( isPowered );
+			
+			// UNDONE: tell the client the state changed!
+			// maybe we need to send a packet?
 		}
 	}
 	
-	private void updateCoalProcessing( )
+	private void updateWheels( boolean isPowered )
 	{
-		if( isPowered() && hasCoal() )
+		if( isPowered )
 		{
+			// spin the wheels
+			m_wheelFrame = m_wheelFrame == 0 ? 1 : 0;
+		}
+	}
+	
+	private void updateCoalProcessing( boolean isPowered )
+	{
+		if( isPowered && hasCoal() )
+		{
+			// calculate the oil frame
+			if( m_processingTimer <= 0 )
+			{
+				m_oilFrame = 0;
+			}
+			else if( m_processingTimer < ProcessingTime/3 )
+			{
+				m_oilFrame = 1;
+			}
+			else if( m_processingTimer < ProcessingTime*2/3 )
+			{
+				m_oilFrame = 2;
+			}
+			else
+			{
+				m_oilFrame = 3;
+			}
+			
 			// did we just finish a processing?
 			if( m_processingTimer == ProcessingTime )
 			{
@@ -125,36 +177,10 @@ public class TileEntityOilRefinery extends TileEntity
 		}
 	}
 	
-	private void updateWheels( )
-	{
-		// get the wheel frame
-		int meta = worldObj.getBlockMetadata( xCoord, yCoord, zCoord );
-		int oldWheelFrame = BlockOilRefinery.getMetaWheelFrame( meta );
-		
-		// update the wheel frame if needed
-		int newWheelFrame = 0;
-		if( isPowered() )
-		{
-			// spin the wheels
-			newWheelFrame = oldWheelFrame == 0 ? 1 : 0;
-		}
-		
-		// update the metadata if needed
-		if( newWheelFrame != oldWheelFrame )
-		{
-			final int FlagSendChangeToClients = 2;
-			worldObj.setBlockMetadataWithNotify(
-				xCoord, yCoord, zCoord,
-				BlockOilRefinery.computeMeta( BlockOilRefinery.getMetaRotation( meta ), newWheelFrame ),
-				FlagSendChangeToClients
-			);
-		}
-	}
-	
-	public boolean isPowered( )
+	private boolean isPowered( )
 	{
 		// along which axis are the sides?
-		boolean sidesAreNorthSouth = BlockOilRefinery.getMetaRotation( worldObj.getBlockMetadata( xCoord, yCoord, zCoord ) ) % 2 == 0;
+		boolean sidesAreNorthSouth = worldObj.getBlockMetadata( xCoord, yCoord, zCoord ) % 2 == 0;
 		
 		// get a list of the blocks on the sides
 		List<ChunkCoordinates> blocks = new ArrayList<ChunkCoordinates>();
@@ -188,7 +214,6 @@ public class TileEntityOilRefinery extends TileEntity
 				return true;
 			}
 		}
-		
 		return false;
 	}
 	

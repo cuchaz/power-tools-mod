@@ -29,6 +29,7 @@ public abstract class ItemDrill extends Item
 	private static final float FillerEfficiency = 8.0f; // 0-12 (2,4,6,8,12 : wood,stone,iron,diamond,gold)
 	private static final float OreEfficiency = 8.0f;
 	private static final int MaxItemUseDuration = 72000;
+	private static final int OilPowerLength = 128;
 	
 	private static final int[] FillerBlocks = new int[]
   	{
@@ -74,6 +75,8 @@ public abstract class ItemDrill extends Item
 	private int m_diggingBlockX;
 	private int m_diggingBlockY;
 	private int m_diggingBlockZ;
+	private int m_powerCountdown;
+	private EntityPlayer m_lastPlayerToHold;
   	
 	static
 	{
@@ -92,6 +95,8 @@ public abstract class ItemDrill extends Item
 		
 		m_updateDelayTimer = 0;
 		resetDiggingState();
+		m_powerCountdown = 0;
+		m_lastPlayerToHold = null;
 	}
 	
 	protected boolean isFillerBlock( Block block )
@@ -127,6 +132,16 @@ public abstract class ItemDrill extends Item
 		itemStack.damageItem( DurabilityLostToEntity, entityUser );
 		
 		return true;
+	}
+	
+	@Override
+	public boolean onEntitySwing( EntityLiving entityLiving, ItemStack itemStack )
+	{
+		final boolean AbortSwing = true;
+		//final boolean AllowSwing = false;
+		
+		// TEMP: never swing
+		return AbortSwing;
 	}
 	
 	@Override
@@ -201,10 +216,7 @@ public abstract class ItemDrill extends Item
 	private boolean isDelayedUpdate( )
 	{
 		boolean isDelayed = m_updateDelayTimer == 0;
-		
-		// update the delay timer
 		m_updateDelayTimer = ( m_updateDelayTimer + 1 ) % 4;
-		
 		return isDelayed;
 	}
 	
@@ -217,6 +229,7 @@ public abstract class ItemDrill extends Item
 		{
 			player = (EntityPlayer)entityUser;
 		}
+		m_lastPlayerToHold = player;
 		
 		// do delayed updates
 		if( isDelayedUpdate() )
@@ -226,7 +239,7 @@ public abstract class ItemDrill extends Item
 				updateDigging( itemStack, world, player );
 			}
 			
-			// UNDONE: handle oil consumption here
+			updateOilConsumption( player );
 		}
 		
 		// do tick updates
@@ -293,6 +306,12 @@ public abstract class ItemDrill extends Item
 		}
 	}
 	
+	private void updateOilConsumption( EntityPlayer player )
+	{
+		// consume power
+		m_powerCountdown = Math.max( m_powerCountdown - 1, 0 );
+	}
+	
 	private void updateBlockDamage( ItemStack itemStack, World world, EntityPlayer player )
 	{
 		// only update when we're actually digging on the client
@@ -331,15 +350,72 @@ public abstract class ItemDrill extends Item
 	@Override
 	public float getStrVsBlock( ItemStack stack, Block block, int meta )
 	{
-		// should be 1-4
-		if( isFillerBlock( block ) )
+		if( isPowered( m_lastPlayerToHold ) )
 		{
-			return FillerEfficiency;
-		}
-		else if( isOreBlock( block ) && m_isDiggingBlock )
-		{
-			return OreEfficiency;
+			// should be 1-4
+			if( isFillerBlock( block ) )
+			{
+				return FillerEfficiency;
+			}
+			else if( isOreBlock( block ) && m_isDiggingBlock )
+			{
+				return OreEfficiency;
+			}
 		}
 		return 0.0f;
+	}
+	
+	private boolean isPowered( EntityPlayer player )
+	{
+		if( player == null )
+		{
+			return false;
+		}
+		
+		// if we're already powered, then we're already powered
+		if( m_powerCountdown > 0 )
+		{
+			return true;
+		}
+		
+		// if we have some oil, then we're powered
+		if( consumeOil( player ) )
+		{
+			m_powerCountdown = OilPowerLength;
+			return true;
+		}
+		
+		return false;
+	}
+	
+	private boolean consumeOil( EntityPlayer player )
+	{
+		// do we have an oil stack?
+		int oilStackIndex = -1;
+		for( int i=0; i<player.inventory.getSizeInventory(); i++ )
+		{
+			ItemStack itemStack = player.inventory.getStackInSlot( i );
+			if( itemStack != null && itemStack.itemID == PowerTools.ItemOil.itemID )
+			{
+				oilStackIndex = i;
+			}
+		}
+		if( oilStackIndex < 0 )
+		{
+			return false;
+		}
+		
+		// use 1 oil
+		ItemStack oilStack = player.inventory.getStackInSlot( oilStackIndex );
+		assert( oilStack.stackSize > 0 );
+		oilStack.stackSize--;
+		
+		// remove empty stacks
+		if( oilStack.stackSize <= 0 )
+		{
+			player.inventory.setInventorySlotContents( oilStackIndex, null );
+		}
+		
+		return true;
 	}
 }

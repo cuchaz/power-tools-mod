@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -19,7 +20,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockOilRefinery extends BlockContainer
 {
 	@SideOnly( Side.CLIENT )
-	private Icon m_iconFront;
+	private Icon[] m_iconFront;
 	@SideOnly( Side.CLIENT )
 	private Icon[] m_iconSide;
 	@SideOnly( Side.CLIENT )
@@ -34,6 +35,7 @@ public class BlockOilRefinery extends BlockContainer
 		setStepSound( soundMetalFootstep );
 		setUnlocalizedName( "blockOilRefinery" );
 		
+		m_iconFront = new Icon[] { null, null, null, null };
 		m_iconSide = new Icon[] { null, null };
 	}
 	
@@ -47,6 +49,19 @@ public class BlockOilRefinery extends BlockContainer
 	@SideOnly( Side.CLIENT )
 	public Icon getIcon( int side, int meta )
 	{
+		return getIcon( side, meta, 0, 0 ); 
+	}
+	
+	@Override
+	@SideOnly( Side.CLIENT )
+	public Icon getBlockTexture( IBlockAccess world, int x, int y, int z, int side )
+	{
+		TileEntityOilRefinery tileEntity = (TileEntityOilRefinery)world.getBlockTileEntity( x, y, z );
+		return getIcon( side, tileEntity.getBlockMetadata(), tileEntity.getWheelFrame(), tileEntity.getOilFrame() );
+	}
+	
+	private Icon getIcon( int side, int rotation, int wheelFrame, int oilFrame )
+	{
 		// top and bottom are easy
 		BlockSide targetSide = BlockSide.getById( side );
 		switch( targetSide )
@@ -55,17 +70,16 @@ public class BlockOilRefinery extends BlockContainer
 			case Bottom: return blockIcon;
 		}
 		
-		// rotate the side using the offset
-		int offset = meta;
-		for( int i=0; i<offset; i++ )
+		// rotate the sides
+		for( int i=0; i<rotation; i++ )
 		{
 			targetSide = targetSide.getXZNextSide();
 		}
 		
-		int wheelFrame = getMetaWheelFrame( meta );
+		// now do the sides
 		switch( targetSide )
 		{
-			case North: return m_iconFront;
+			case North: return m_iconFront[oilFrame];
 			case West: return m_iconSide[wheelFrame];
 			case South: return blockIcon;
 			case East: return m_iconSide[wheelFrame];
@@ -81,7 +95,10 @@ public class BlockOilRefinery extends BlockContainer
 	{
 		// UNDONE: can change textures here based on state
 		blockIcon = iconRegister.registerIcon( "powerTools:oilRefineryBack" );
-		m_iconFront = iconRegister.registerIcon( "powerTools:oilRefineryFront" );
+		m_iconFront[0] = iconRegister.registerIcon( "powerTools:oilRefineryFront1" );
+		m_iconFront[1] = iconRegister.registerIcon( "powerTools:oilRefineryFront2" );
+		m_iconFront[2] = iconRegister.registerIcon( "powerTools:oilRefineryFront3" );
+		m_iconFront[3] = iconRegister.registerIcon( "powerTools:oilRefineryFront4" );
 		m_iconSide[0] = iconRegister.registerIcon( "powerTools:oilRefinerySide1" );
 		m_iconSide[1] = iconRegister.registerIcon( "powerTools:oilRefinerySide2" );
 		m_iconTop = iconRegister.registerIcon( "powerTools:oilRefineryTop" );
@@ -122,7 +139,7 @@ public class BlockOilRefinery extends BlockContainer
 		}
 		
 		// set the offset as the block meta
-		world.setBlockMetadataWithNotify( x, y, z, computeMeta( rotation, 0 ), FlagSendChangeToClients );
+		world.setBlockMetadataWithNotify( x, y, z, rotation, FlagSendChangeToClients );
     }
 	
 	@Override
@@ -184,20 +201,5 @@ public class BlockOilRefinery extends BlockContainer
 		}
 		
 		super.breakBlock( world, x, y, z, side, meta );
-	}
-	
-	public static int getMetaRotation( int meta )
-	{
-		return meta & 0x3;
-	}
-	
-	public static int getMetaWheelFrame( int meta )
-	{
-		return ( meta & 0x4 ) >> 2;
-	}
-	
-	public static int computeMeta( int rotation, int wheelFrame )
-	{
-		return ( ( wheelFrame & 0x1 ) << 2 ) | ( rotation & 0x3 );
 	}
 }
