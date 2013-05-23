@@ -6,6 +6,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -16,14 +17,18 @@ public class TileEntityOilRefinery extends TileEntity
 {
 	private static final String InventoryName = "Oil Refinery";
 	private static final int InventorySize = 9; // needs to be a multiple of 9 or the GUI won't work
+	private static final int ProcessingTime = 32;
+	private static final int OilPerCoal = 2;
 	
 	private InventoryBasic m_inventory;
 	private int m_delayCounter;
+	private int m_processingTimer;
 	
 	public TileEntityOilRefinery( )
 	{
 		m_inventory = new InventoryBasic( InventoryName, false, InventorySize );
 		m_delayCounter = 0;
+		m_processingTimer = 0;
 	}
 	
 	public IInventory getInventory( )
@@ -47,8 +52,6 @@ public class TileEntityOilRefinery extends TileEntity
 				m_inventory.setInventorySlotContents( slot, ItemStack.loadItemStackFromNBT( itemNbt ) );
 			}
 		}
-		
-		// UNDONE: load other state
 	}
 	
 	@Override
@@ -74,8 +77,6 @@ public class TileEntityOilRefinery extends TileEntity
 			tagList.appendTag( itemNbt );
 		}
         nbt.setTag( "items", tagList );
-        
-        // UNDONE: write other state
 	}
 	
 	private boolean isDelayedUpdate( )
@@ -88,13 +89,44 @@ public class TileEntityOilRefinery extends TileEntity
 	@Override
 	public void updateEntity( )
 	{
-		if( !isDelayedUpdate() )
+		if( isDelayedUpdate() )
 		{
-			return;
+			updateCoalProcessing();
+			updateWheels();
 		}
-		
-		// UNDONE: handle coal processing
-		
+	}
+	
+	private void updateCoalProcessing( )
+	{
+		if( isPowered() && hasCoal() )
+		{
+			// did we just finish a processing?
+			if( m_processingTimer == ProcessingTime )
+			{
+				// convert coal into oil
+				boolean atLeastOneOilAdded = incrementOil( OilPerCoal );
+				if( atLeastOneOilAdded )
+				{
+					decrementCoal();
+				}
+				
+				m_processingTimer = 0;
+			}
+			else
+			{
+				// progress the timer
+				m_processingTimer++;
+			}
+		}
+		else
+		{
+			// reset the timer
+			m_processingTimer = 0;
+		}
+	}
+	
+	private void updateWheels( )
+	{
 		// get the wheel frame
 		int meta = worldObj.getBlockMetadata( xCoord, yCoord, zCoord );
 		int oldWheelFrame = BlockOilRefinery.getMetaWheelFrame( meta );
@@ -158,5 +190,106 @@ public class TileEntityOilRefinery extends TileEntity
 		}
 		
 		return false;
+	}
+	
+	private boolean hasCoal( )
+	{
+		return getAnyCoalStackIndex() >= 0;
+	}
+	
+	private void decrementCoal( )
+	{
+		// find a coal stack
+		int stackIndex = getAnyCoalStackIndex();
+		if( stackIndex < 0 )
+		{
+			return;
+		}
+		
+		// get the stack
+		ItemStack itemStack = m_inventory.getStackInSlot( stackIndex );
+		assert( itemStack.stackSize > 0 );
+		
+		// decrement the stack
+		itemStack.stackSize--;
+		
+		// remove the empty stack if needed
+		if( itemStack.stackSize <= 0 )
+		{
+			m_inventory.setInventorySlotContents( stackIndex, null );
+		}
+	}
+	
+	private int getAnyCoalStackIndex( )
+	{
+		for( int i=0; i<m_inventory.getSizeInventory(); i++ )
+		{
+			ItemStack itemStack = m_inventory.getStackInSlot( i );
+			if( itemStack != null && itemStack.itemID == Item.coal.itemID )
+			{
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	private boolean incrementOil( int quantity )
+	{
+		boolean someAdded = false;
+		for( int i=0; i<quantity; i++ )
+		{
+			someAdded = incrementOil() || someAdded;
+		}
+		return someAdded;
+	}
+	
+	private boolean incrementOil( )
+	{
+		// find an unfull stack to increment
+		int targetIndex = getAnyUnfullOilStackIndex();
+		if( targetIndex >= 0 )
+		{
+			m_inventory.getStackInSlot( targetIndex ).stackSize++;
+			return true;
+		}
+		
+		// make a new stack in an empty slot
+		targetIndex = getAnyEmptyStackIndex();
+		if( targetIndex >= 0 )
+		{
+			m_inventory.setInventorySlotContents( targetIndex, new ItemStack( PowerTools.ItemOil, 1 ) );
+			return true;
+		}
+		
+		// nowhere to put new oil
+		return false;
+	}
+	
+	private int getAnyUnfullOilStackIndex( )
+	{
+		for( int i=0; i<m_inventory.getSizeInventory(); i++ )
+		{
+			ItemStack itemStack = m_inventory.getStackInSlot( i );
+			if( itemStack != null && itemStack.itemID == PowerTools.ItemOil.itemID )
+			{
+				if( itemStack.stackSize < PowerTools.ItemOil.getItemStackLimit() )
+				{
+					return i;
+				}
+			}
+		}
+		return -1;
+	}
+	
+	private int getAnyEmptyStackIndex( )
+	{
+		for( int i=0; i<m_inventory.getSizeInventory(); i++ )
+		{
+			if( m_inventory.getStackInSlot( i ) == null )
+			{
+				return i;
+			}
+		}
+		return -1;
 	}
 }
