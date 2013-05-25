@@ -10,6 +10,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 
@@ -66,6 +69,11 @@ public class TileEntityOilRefinery extends TileEntity
 				m_inventory.setInventorySlotContents( slot, ItemStack.loadItemStackFromNBT( itemNbt ) );
 			}
 		}
+		
+		// load the processing state
+		m_processingTimer = nbt.getByte( "processingTimer" );
+		m_wheelFrame = nbt.getByte( "wheelFrame" );
+		m_oilFrame = nbt.getByte( "oilFrame" );
 	}
 	
 	@Override
@@ -91,6 +99,46 @@ public class TileEntityOilRefinery extends TileEntity
 			tagList.appendTag( itemNbt );
 		}
         nbt.setTag( "items", tagList );
+        
+        // save the processing state
+        nbt.setByte( "processingTimer", (byte)( m_processingTimer & 0xff ) );
+        nbt.setByte( "wheelFrame", (byte)( m_wheelFrame & 0xff ) );
+        nbt.setByte( "oilFrame", (byte)( m_oilFrame & 0xff ) );
+	}
+	
+	@Override
+	public Packet getDescriptionPacket( )
+	{
+		NBTTagCompound nbt = new NBTTagCompound();
+		writeToNBT( nbt );
+		return new Packet132TileEntityData( xCoord, yCoord, zCoord, 0, nbt );
+	}
+	
+	@Override
+	public void onDataPacket( INetworkManager net, Packet132TileEntityData packet )
+	{
+		readFromNBT( packet.customParam1 );
+		
+		// re-render if we're on the client
+		if( worldObj.isRemote )
+		{
+			worldObj.markBlockForRenderUpdate( xCoord, yCoord, zCoord );
+		}
+	}
+	
+	public void onBlockActivated( )
+	{
+		// NOTE: this is only called on the server
+		assert( !worldObj.isRemote );
+		
+		// if we're done processing, reset the oil frame
+		if( m_processingTimer == 0 )
+		{
+			m_oilFrame = 0;
+			
+			// update the client
+			worldObj.markBlockForUpdate( xCoord, yCoord, zCoord );
+		}
 	}
 	
 	private boolean isDelayedUpdate( )
@@ -103,54 +151,77 @@ public class TileEntityOilRefinery extends TileEntity
 	@Override
 	public void updateEntity( )
 	{
-		// the client never has any inventory!!
-		// we have to do all the processing on the server
-		if( worldObj.isRemote )
-		{
-			return;
-		}
-		
 		if( isDelayedUpdate() )
 		{
 			boolean isPowered = isPowered();
-			updateWheels( isPowered );
-			updateCoalProcessing( isPowered );
+			boolean wheelsUpdated = updateWheels( isPowered );
+			boolean oilUpdated = updateCoalProcessing( isPowered );
 			
-			// UNDONE: tell the client the state changed!
-			// maybe we need to send a packet?
+			// on the client...
+			if( worldObj.isRemote )
+			{
+				if( wheelsUpdated )
+				{
+					// re-render the block
+					worldObj.markBlockForRenderUpdate( xCoord, yCoord, zCoord );
+				}
+			}
+			// on the server...
+			else
+			{
+				if( oilUpdated )
+				{
+					// update the client
+					worldObj.markBlockForUpdate( xCoord, yCoord, zCoord );
+				}
+			}
 		}
 	}
 	
-	private void updateWheels( boolean isPowered )
+	private boolean updateWheels( boolean isPowered )
 	{
 		if( isPowered )
 		{
 			// spin the wheels
 			m_wheelFrame = m_wheelFrame == 0 ? 1 : 0;
+			
+			return true;
 		}
+		
+		return false;
 	}
 	
-	private void updateCoalProcessing( boolean isPowered )
+	private boolean updateCoalProcessing( boolean isPowered )
 	{
+		int newOilFrame = m_oilFrame;
+		
+		// the client never has any inventory!!
+		// we have to do all the processing on the server
+		if( worldObj.isRemote )
+		{
+			return false;
+		}
+		
 		if( isPowered && hasCoal() )
 		{
 			// calculate the oil frame
-			if( m_processingTimer <= 0 )
+			if( m_processingTimer <= ProcessingTime*1/6 )
 			{
-				m_oilFrame = 0;
+				newOilFrame = 0;
 			}
-			else if( m_processingTimer < ProcessingTime/3 )
+			else if( m_processingTimer <= ProcessingTime*3/6 )
 			{
-				m_oilFrame = 1;
+				newOilFrame = 1;
 			}
-			else if( m_processingTimer < ProcessingTime*2/3 )
+			else if( m_processingTimer <= ProcessingTime*5/6 )
 			{
-				m_oilFrame = 2;
+				newOilFrame = 2;
 			}
 			else
 			{
-				m_oilFrame = 3;
+				newOilFrame = 3;
 			}
+			
 			
 			// did we just finish a processing?
 			if( m_processingTimer == ProcessingTime )
@@ -175,6 +246,14 @@ public class TileEntityOilRefinery extends TileEntity
 			// reset the timer
 			m_processingTimer = 0;
 		}
+		
+		// did we update the animation state?
+		if( newOilFrame != m_oilFrame )
+		{
+			m_oilFrame = newOilFrame;
+			return true;
+		}
+		return false;
 	}
 	
 	private boolean isPowered( )

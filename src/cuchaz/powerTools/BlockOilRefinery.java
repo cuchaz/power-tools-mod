@@ -155,6 +155,7 @@ public class BlockOilRefinery extends BlockContainer
 		if( tileEntity != null )
 		{
 			player.displayGUIChest( tileEntity.getInventory() );
+			tileEntity.onBlockActivated();
 		}
 		
 		return true;
