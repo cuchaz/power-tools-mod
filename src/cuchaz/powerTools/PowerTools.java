@@ -14,7 +14,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod( modid="cuchaz.powerTools", name="Power Tools", version="0.0.1" )
+@Mod( modid="cuchaz.powerTools", name="Power Tools", version="0.1" )
 @NetworkMod( clientSideRequired=true, serverSideRequired=true )
 public class PowerTools
 {

@@ -1,0 +1,19 @@
+[
+{
+"modid": "cuchaz.powerTools",
+"name": "Power Tools",
+"description": "Mine more efficiently with drills!",
+"version": "0.1",
+"credits": "Created by Cuchaz",
+"logoFile": "",
+"mcversion": "1.5.2",
+"url": "http://www.minecraftforge.net/",
+"updateUrl": "",
+"authors": [ "Cuchaz" ],
+"parent":"",
+"screenshots": [],
+"dependencies": [
+"mod_MinecraftForge"
+]
+}
+]

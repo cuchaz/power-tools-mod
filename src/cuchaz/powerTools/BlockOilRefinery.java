@@ -34,9 +34,6 @@ public class BlockOilRefinery extends BlockContainer
 		setResistance( 10.0F );
 		setStepSound( soundMetalFootstep );
 		setUnlocalizedName( "blockOilRefinery" );
-		
-		m_iconFront = new Icon[] { null, null, null, null };
-		m_iconSide = new Icon[] { null, null };
 	}
 	
 	@Override
@@ -60,6 +57,7 @@ public class BlockOilRefinery extends BlockContainer
 		return getIcon( side, tileEntity.getBlockMetadata(), tileEntity.getWheelFrame(), tileEntity.getOilFrame() );
 	}
 	
+	@SideOnly( Side.CLIENT )
 	private Icon getIcon( int side, int rotation, int wheelFrame, int oilFrame )
 	{
 		// top and bottom are easy
@@ -93,6 +91,9 @@ public class BlockOilRefinery extends BlockContainer
 	@SideOnly( Side.CLIENT )
 	public void registerIcons( IconRegister iconRegister )
 	{
+		m_iconFront = new Icon[] { null, null, null, null };
+		m_iconSide = new Icon[] { null, null };
+		
 		// UNDONE: can change textures here based on state
 		blockIcon = iconRegister.registerIcon( "powerTools:oilRefineryBack" );
 		m_iconFront[0] = iconRegister.registerIcon( "powerTools:oilRefineryFront1" );
