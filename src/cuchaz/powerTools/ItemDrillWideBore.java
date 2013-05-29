@@ -23,7 +23,7 @@ public class ItemDrillWideBore extends ItemDrill
 	}
 	
 	@Override
-	public List<ChunkCoordinates> getOtherBlocksToDig( World world, int blockId, int x, int y, int z, int side, EntityPlayer player )
+	public List<ChunkCoordinates> getOtherBlocksToDig( World world, int x, int y, int z, int side, EntityPlayer player )
 	{
 		// make the 8-block pattern (like the 9-block pattern, but skip 0,0)
 		int[] dim1 = { -1, -1, -1, 0, /*0,*/ 0, 1, 1, 1 };

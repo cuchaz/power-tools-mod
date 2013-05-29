@@ -137,34 +137,26 @@ public abstract class ItemDrill extends Item
 	@Override
 	public boolean onEntitySwing( EntityLiving entityLiving, ItemStack itemStack )
 	{
-		final boolean AbortSwing = true;
-		//final boolean AllowSwing = false;
+		//final boolean AbortSwing = true;
+		final boolean AllowSwing = false;
 		
-		// TEMP: never swing
-		return AbortSwing;
+		return AllowSwing;
 	}
 	
 	@Override
-	public boolean onBlockDestroyed( ItemStack itemStack, World world, int blockId, int x, int y, int z, EntityLiving entityUser )
+	public boolean onBlockStartBreak( ItemStack itemStack, int x, int y, int z, EntityPlayer player )
 	{
-		// get the player
-		EntityPlayer player;
-		if( entityUser instanceof EntityPlayer )
-		{
-			player = (EntityPlayer)entityUser;
-		}
-		else
-		{
-			return false;
-		}
+		final boolean AllowHarvest = false;
+		//final boolean PreventHarvest = true;
 		
-		// find out where we're aiming
+		// find out which side we're hitting
+		World world = player.worldObj;
 		Block block = Block.blocksList[world.getBlockId( x, y, z )];
 		final boolean HitLiquids = false;
 		MovingObjectPosition pos = getMovingObjectPositionFromPlayer( world, player, HitLiquids );
 		if( pos == null || pos.blockX != x || pos.blockY != y || pos.blockZ != z )
 		{
-			return false;
+			return AllowHarvest;
 		}
 		int side = pos.sideHit;
 		
@@ -172,11 +164,11 @@ public abstract class ItemDrill extends Item
 		if( block.getBlockHardness( world, x, y, z ) != 0.0f )
 		{
 			// decrease item durability
-			itemStack.damageItem( DurabilityLostToBlock, entityUser );
+			itemStack.damageItem( DurabilityLostToBlock, player );
 		}
 		
 		// dig the extra blocks
-		for( ChunkCoordinates coords : getOtherBlocksToDig( world, blockId, x, y, z, side, player ) )
+		for( ChunkCoordinates coords : getOtherBlocksToDig( world, x, y, z, side, player ) )
 		{
 			if( isFillerBlock( world.getBlockId( coords.posX, coords.posY, coords.posZ ) ) )
 			{
@@ -187,7 +179,7 @@ public abstract class ItemDrill extends Item
 		return false;
 	}
 	
-	protected abstract List<ChunkCoordinates> getOtherBlocksToDig( World world, int blockId, int x, int y, int z, int side, EntityPlayer player );
+	protected abstract List<ChunkCoordinates> getOtherBlocksToDig( World world, int x, int y, int z, int side, EntityPlayer player );
 	
 	@Override
 	public ItemStack onItemRightClick( ItemStack itemStack, World world, EntityPlayer entityUser )
@@ -216,7 +208,7 @@ public abstract class ItemDrill extends Item
 	private boolean isDelayedUpdate( )
 	{
 		boolean isDelayed = m_updateDelayTimer == 0;
-		m_updateDelayTimer = ( m_updateDelayTimer + 1 ) % 4;
+		m_updateDelayTimer = ( m_updateDelayTimer + 1 ) % 2;
 		return isDelayed;
 	}
 	
@@ -245,7 +237,11 @@ public abstract class ItemDrill extends Item
 		// do tick updates
 		if( player != null )
 		{
-			updateBlockDamage( itemStack, world, player );
+			// only on the client...
+			if( world.isRemote )
+			{
+				updateBlockDamage( itemStack, world, player );
+			}
 		}
 	}
 	
@@ -312,10 +308,11 @@ public abstract class ItemDrill extends Item
 		m_powerCountdown = Math.max( m_powerCountdown - 1, 0 );
 	}
 	
+	@SideOnly( Side.CLIENT )
 	private void updateBlockDamage( ItemStack itemStack, World world, EntityPlayer player )
 	{
-		// only update when we're actually digging on the client
-		if( m_isDiggingBlock && world.isRemote )
+		// only update when we're actually digging
+		if( m_isDiggingBlock )
 		{
 			int damageState = (int)( m_blockDamage*9.0f );
 			world.destroyBlockInWorldPartially( player.entityId, m_diggingBlockX, m_diggingBlockY, m_diggingBlockZ, damageState );

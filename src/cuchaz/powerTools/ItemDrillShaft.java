@@ -26,10 +26,10 @@ public class ItemDrillShaft extends ItemDrill
 	}
 	
 	@Override
-	public List<ChunkCoordinates> getOtherBlocksToDig( World world, int blockId, int x, int y, int z, int side, EntityPlayer player )
+	public List<ChunkCoordinates> getOtherBlocksToDig( World world, int x, int y, int z, int side, EntityPlayer player )
 	{
 		// is the block closer to our feet or our eyes?
-		double entityFeetPosY = player.getPosition( 1.0f ).yCoord;
+		double entityFeetPosY = player.posY - player.yOffset;
 		double entityEyesPosY = entityFeetPosY + player.getEyeHeight();
 		double distToFeet = Math.abs( entityFeetPosY - y );
 		double distToEyes = Math.abs( entityEyesPosY - y );
