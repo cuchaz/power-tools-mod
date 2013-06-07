@@ -1,0 +1,13 @@
+06/06/2013
+
+NEW FEATURES
+introduced the new chainsaw tool!
+drills now mine ores individually, albeit slowly
+power tools without oil will no longer play the swing animation
+power tools can now be used to break grass, torches, etc.
+
+BIG FIXES
+fixed an oil consumption bug when multiple players use power tools at the same time
+
+PHANTOM CHANGES
+removed right-click digging

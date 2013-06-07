@@ -2,6 +2,7 @@ package cuchaz.powerTools;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -25,6 +26,7 @@ public class PowerTools
 	public static final ItemOil ItemOil = new ItemOil( 7308 );
 	public static final ItemDrillShaft ItemDrillShaft = new ItemDrillShaft( 7309 );
 	public static final ItemDrillWideBore ItemDrillWideBore = new ItemDrillWideBore( 7310 );
+	public static final ItemChainsaw ItemChainsaw = new ItemChainsaw( 7311 );
 	
 	// block registration: use ids [1150,1154]
 	public static final BlockOilRefinery BlockOilRefinery = new BlockOilRefinery( 1150 );
@@ -42,6 +44,7 @@ public class PowerTools
 		GameRegistry.registerItem( ItemOil, "oil" );
 		GameRegistry.registerItem( ItemDrillShaft, "drillShaft" );
 		GameRegistry.registerItem( ItemDrillWideBore, "drillWideBore" );
+		GameRegistry.registerItem( ItemChainsaw, "chainsaw" );
 		
 		GameRegistry.registerBlock( BlockOilRefinery, "oilRefinery" );
 		
@@ -51,6 +54,7 @@ public class PowerTools
 		LanguageRegistry.addName( ItemOil, "Oil" );
 		LanguageRegistry.addName( ItemDrillShaft, "Shaft Drill" );
 		LanguageRegistry.addName( ItemDrillWideBore, "Wide-Bore Drill" );
+		LanguageRegistry.addName( ItemChainsaw, "Chainsaw" );
 		
 		LanguageRegistry.addName( BlockOilRefinery, "Oil Refinery" );
 		
@@ -60,6 +64,11 @@ public class PowerTools
 		ItemStack stickStack = new ItemStack( Item.stick );
 		ItemStack redstoneStack = new ItemStack( Item.redstone );
 		ItemStack oilStack = new ItemStack( ItemOil );
+		
+		// register for events
+		MinecraftForge.EVENT_BUS.register( ItemDrillShaft );
+		MinecraftForge.EVENT_BUS.register( ItemDrillWideBore );
+		MinecraftForge.EVENT_BUS.register( ItemChainsaw );
 		
 		// crafting recipes
 		
@@ -75,7 +84,7 @@ public class PowerTools
 			'y', waterStack
 		);
 		
-		// drills
+		// tools
 		GameRegistry.addRecipe(
 			new ItemStack( ItemDrillShaft, 1 ),
 			" xx", "yyy", " zz",
@@ -86,6 +95,13 @@ public class PowerTools
 		GameRegistry.addRecipe(
 			new ItemStack( ItemDrillWideBore, 1 ),
 			"yxx", "yyy", "yzz",
+			'x', redstoneStack,
+			'y', ironStack,
+			'z', stickStack
+		);
+		GameRegistry.addRecipe(
+			new ItemStack( ItemChainsaw, 1 ),
+			"x y", "xy ", "zz ",
 			'x', redstoneStack,
 			'y', ironStack,
 			'z', stickStack
