@@ -21,7 +21,7 @@ public abstract class ItemDrill extends ItemOilBasedTool
 	private static final int DurabilityLostToBlock = 1; // should be small fraction of MaxUses
 	private static final int DurabilityLostToEntity = 2; //
 	private static final float FillerEfficiency = 8.0f; // 0-12 (2,4,6,8,12 : wood,stone,iron,diamond,gold)
-	private static final float OreEfficiency = 4.0f;
+	private static final float OreEfficiency = 1.0f;
 	private static final int OilPowerLength = 350;
 	
 	private static final int[] FillerBlocks = new int[]

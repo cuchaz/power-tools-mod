@@ -1,5 +1,7 @@
 package cuchaz.powerTools;
 
+import java.util.List;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -9,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -59,7 +62,7 @@ public class ItemOilBasedTool extends Item
 			return;
 		}
 		
-		updateOilConsumption( player );
+		updateOilConsumption( player, itemStack );
 	}
 	
 	@Override
@@ -75,7 +78,7 @@ public class ItemOilBasedTool extends Item
 			return AllowSwing;
 		}
 		
-		if( isPowered( player ) )
+		if( isPowered( player, itemStack ) )
 		{
 			return AllowSwing;
 		}
@@ -102,7 +105,7 @@ public class ItemOilBasedTool extends Item
 		}
 		
 		// if we're not powered, blocks are infinitely hard
-		if( !isPowered( player ) )
+		if( !isPowered( player, player.getHeldItem() ) )
 		{
 			event.newSpeed = 0.0f;
 		}
@@ -121,17 +124,26 @@ public class ItemOilBasedTool extends Item
         return true;
     }
 	
-	protected void updateOilConsumption( EntityPlayer player )
+	protected void updateOilConsumption( EntityPlayer player, ItemStack itemStack )
 	{
-		State state = m_states.getState( player );
+		State state = m_states.getState( itemStack );
 		
 		// consume power
 		state.powerCountdown = Math.max( state.powerCountdown - 1, 0 );
+		
+		// UNDONE: need to fix client/server sync on item consumption
+		// maybe only consume items on the server, but keep power timer on client?
+		
+		// TEMP
+		if( state.powerCountdown > 0 )
+		{
+			System.out.println( ( player.worldObj.isRemote ? "CLIENT" : "SERVER" ) + ": " + getClass().getSimpleName() + ": oil power: " + state.powerCountdown );
+		}
 	}
 	
-	protected boolean isPowered( EntityPlayer player )
+	protected boolean isPowered( EntityPlayer player, ItemStack itemStack )
 	{
-		State state = m_states.getState( player );
+		State state = m_states.getState( itemStack );
 		
 		// if we're already powered, then we're already powered
 		if( state.powerCountdown > 0 )
@@ -151,12 +163,14 @@ public class ItemOilBasedTool extends Item
 	
 	private boolean consumeOil( EntityPlayer player )
 	{
+		List<ItemStack> oilItemStacks = OreDictionary.getOres( PowerTools.Oil );
+		
 		// do we have an oil stack?
 		int oilStackIndex = -1;
 		for( int i=0; i<player.inventory.getSizeInventory(); i++ )
 		{
 			ItemStack itemStack = player.inventory.getStackInSlot( i );
-			if( itemStack != null && itemStack.itemID == PowerTools.ItemOil.itemID )
+			if( itemStack != null && itemStackInList( oilItemStacks, itemStack ) )
 			{
 				oilStackIndex = i;
 			}
@@ -171,6 +185,9 @@ public class ItemOilBasedTool extends Item
 		assert( oilStack.stackSize > 0 );
 		oilStack.stackSize--;
 		
+		// TEMP
+		System.out.println( ( player.worldObj.isRemote ? "CLIENT" : "SERVER" ) + ": " + getClass().getSimpleName() + ": consumed 1 oil! " + oilStack.stackSize + " oil remaining." );
+		
 		// remove empty stacks
 		if( oilStack.stackSize <= 0 )
 		{
@@ -180,6 +197,18 @@ public class ItemOilBasedTool extends Item
 		return true;
 	}
 	
+	private boolean itemStackInList( List<ItemStack> stacks, ItemStack stack )
+	{
+		for( ItemStack s : stacks )
+		{
+			if( s.getItem().itemID == stack.getItem().itemID )
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
 	protected EntityPlayer getPlayerFromEntity( Entity entity )
 	{
 		if( entity instanceof EntityPlayer )

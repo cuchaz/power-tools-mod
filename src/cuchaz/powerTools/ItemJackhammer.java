@@ -1,6 +1,7 @@
 package cuchaz.powerTools;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -8,21 +9,25 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class ItemChainsaw extends ItemOilBasedTool
+public class ItemJackhammer extends ItemOilBasedTool
 {
 	// settings
 	private static final int MaxUses = 400;
-	private static final int DamageVsEntity = 4; // should be 0-5
+	private static final int DamageVsEntity = 1; // should be 0-5
 	private static final int Enchantability = 10; // should be 0-22
-	private static final int DurabilityLostToBlockWood = 8; // should be small fraction of MaxUses
-	private static final int DurabilityLostToBlockLeaves = 1; //
-	private static final int DurabilityLostToBlockOther = 20; //
+	private static final int DurabilityLostToHardBlock = 1; // should be small fraction of MaxUses
+	private static final int DurabilityLostToOther = 20; //
 	private static final int DurabilityLostToEntity = 5; //
-	private static final float WoodEfficiency = 1.0f; // 0-12 (2,4,6,8,12 : wood,stone,iron,diamond,gold)
-	private static final float LeavesEfficiency = 12.0f;
-	private static final int OilPowerLength = 160;
+	private static final int OilPowerLength = 350;
 	
-	public ItemChainsaw( int itemId )
+	private static final Material[] HardMaterials =
+	{
+		Material.glass,
+		Material.ice,
+		Material.rock
+	};
+	
+	public ItemJackhammer( int itemId )
 	{
 		super( itemId, OilPowerLength );
 		
@@ -32,13 +37,13 @@ public class ItemChainsaw extends ItemOilBasedTool
 	@Override
 	public void registerIcons( IconRegister iconRegister )
 	{
-		itemIcon = iconRegister.registerIcon( "powerTools:chainsaw" );
+		itemIcon = iconRegister.registerIcon( "powerTools:jackhammer" );
 	}
 	
 	@Override
 	public boolean canHarvestBlock( Block block )
 	{
-		return block.blockID == Block.wood.blockID;
+		return isTargetBlock( block );
 	}
 	
 	@Override
@@ -53,6 +58,7 @@ public class ItemChainsaw extends ItemOilBasedTool
 	@Override
 	public boolean onBlockStartBreak( ItemStack itemStack, int x, int y, int z, EntityPlayer player )
 	{
+		// get the block
 		World world = player.worldObj;
 		Block block = Block.blocksList[world.getBlockId( x, y, z )];
 		
@@ -60,26 +66,7 @@ public class ItemChainsaw extends ItemOilBasedTool
 		if( block.getBlockHardness( world, x, y, z ) != 0.0f )
 		{
 			// decrease item durability
-			int damage = 0;
-			if( block.blockID == Block.wood.blockID )
-			{
-				damage = DurabilityLostToBlockWood;
-				
-				// on the server, spawn a tree harvester
-				if( !world.isRemote )
-				{
-					TileEntityTreeHarvester.spawn( world, x, y, z );
-				}
-			}
-			else if( block.blockID == Block.leaves.blockID )
-			{
-				damage = DurabilityLostToBlockLeaves;
-			}
-			else
-			{
-				damage = DurabilityLostToBlockOther;
-			}
-			itemStack.damageItem( damage, player );
+			itemStack.damageItem( isTargetBlock( block ) ? DurabilityLostToHardBlock : DurabilityLostToOther, player );
 		}
 		
 		return super.onBlockStartBreak( itemStack, x, y, z, player );
@@ -100,14 +87,36 @@ public class ItemChainsaw extends ItemOilBasedTool
 	@Override
 	public float getStrVsBlock( ItemStack stack, Block block, int meta )
 	{
-		if( block == Block.wood )
+		if( isTargetBlock( block ) )
 		{
-			return WoodEfficiency;
-		}
-		else if( block == Block.leaves )
-		{
-			return LeavesEfficiency;
+			// efficiency
+			// 0-12 (2,4,6,8,12 : wood,stone,iron,diamond,gold)
+			
+			// hardness
+			// stone: 1.5
+			// coal,iron,gold ore: 3.0
+			// blockIron, blockEmerald: 5.0
+			// obsidian: 50.0
+
+			// want 1.5x -> 12
+			// want 5.0x -> 40
+			// want 50x -> 400
+			
+			// the harder the block, the better the jackhammer works
+			return block.blockHardness * 8;
 		}
 		return super.getStrVsBlock( stack, block, meta );
+	}
+	
+	private boolean isTargetBlock( Block block )
+	{
+		for( Material material : HardMaterials )
+		{
+			if( block.blockMaterial == material )
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 }

@@ -1,35 +1,29 @@
 package cuchaz.powerTools;
 
 import java.util.HashMap;
-import java.util.Iterator;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 
-public class ToolStates<T extends ToolState<T>> implements Iterable<EntityPlayer>
+public class ToolStates<T extends ToolState<T>>
 {
-	private HashMap<EntityPlayer,T> m_memory;
+	private HashMap<ItemStack,T> m_memory;
 	private T m_defaultState;
 	
 	public ToolStates( T defaultState )
 	{
-		m_memory = new HashMap<EntityPlayer,T>();
+		m_memory = new HashMap<ItemStack,T>();
 		m_defaultState = defaultState;
 	}
 	
-	public void setState( EntityPlayer player, T state )
+	public T getState( ItemStack itemStack )
 	{
-		m_memory.put( player, state );
-	}
-	
-	public T getState( EntityPlayer player )
-	{
-		T state = m_memory.get( player );
+		T state = m_memory.get( itemStack );
 		if( state == null )
 		{
 			try
 			{
 				state = m_defaultState.clone();
-				m_memory.put( player, state );
+				m_memory.put( itemStack, state );
 			}
 			catch( CloneNotSupportedException ex )
 			{
@@ -38,11 +32,5 @@ public class ToolStates<T extends ToolState<T>> implements Iterable<EntityPlayer
 			}
 		}
 		return state;
-	}
-	
-	@Override
-	public Iterator<EntityPlayer> iterator( )
-	{
-		return m_memory.keySet().iterator();
 	}
 }

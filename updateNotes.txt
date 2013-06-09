@@ -1,13 +1,15 @@
 06/06/2013
 
 NEW FEATURES
-introduced the new chainsaw tool!
+added new chainsaw tool!
+added new jackhammer tool!
 drills now mine ores individually, albeit slowly
 power tools without oil will no longer play the swing animation
 power tools can now be used to break grass, torches, etc.
+added oil to the Forge oil dictionary
 
 BIG FIXES
-fixed an oil consumption bug when multiple players use power tools at the same time
+fixed several bugs related to oil consumption. code in multiplayer client/server environments is hard to get right. =)
 
 PHANTOM CHANGES
 removed right-click digging
