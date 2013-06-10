@@ -1,5 +1,7 @@
 package cuchaz.powerTools;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -35,6 +37,7 @@ public class ItemJackhammer extends ItemOilBasedTool
 	}
 	
 	@Override
+	@SideOnly( Side.CLIENT )
 	public void registerIcons( IconRegister iconRegister )
 	{
 		itemIcon = iconRegister.registerIcon( "powerTools:jackhammer" );

@@ -3,6 +3,9 @@ package cuchaz.powerTools;
 import java.util.ArrayList;
 import java.util.List;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChunkCoordinates;
@@ -20,6 +23,7 @@ public class ItemDrillShaft extends ItemDrill
 	}
     
 	@Override
+	@SideOnly( Side.CLIENT )
 	public void registerIcons( IconRegister iconRegister )
 	{
 		itemIcon = iconRegister.registerIcon( "powerTools:drillShaft" );

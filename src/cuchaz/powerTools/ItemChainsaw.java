@@ -1,5 +1,7 @@
 package cuchaz.powerTools;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
@@ -30,6 +32,7 @@ public class ItemChainsaw extends ItemOilBasedTool
 	}
 	
 	@Override
+	@SideOnly( Side.CLIENT )
 	public void registerIcons( IconRegister iconRegister )
 	{
 		itemIcon = iconRegister.registerIcon( "powerTools:chainsaw" );
