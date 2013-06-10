@@ -15,12 +15,12 @@ public class TileEntityTreeHarvester extends TileEntity
 {
 	private static final int SearchSize = 5;
 	
-	private int m_delayCounter;
+	private DelayTimer m_delayTimer;
 	private List<List<ChunkCoordinates>> m_treeBlocks;
 	
 	public TileEntityTreeHarvester( )
 	{
-		m_delayCounter = 0;
+		m_delayTimer = new DelayTimer( 16 );
 		m_treeBlocks = new ArrayList<List<ChunkCoordinates>>();
 	}
 	
@@ -114,7 +114,7 @@ public class TileEntityTreeHarvester extends TileEntity
 	@Override
 	public void updateEntity( )
 	{
-		if( !isDelayedUpdate() )
+		if( !m_delayTimer.isDelayedUpdate() )
 		{
 			return;
 		}
@@ -187,13 +187,6 @@ public class TileEntityTreeHarvester extends TileEntity
 		}
 		
 		return harvestBlock;
-	}
-
-	private boolean isDelayedUpdate( )
-	{
-		boolean isUpdate = m_delayCounter == 0;
-		m_delayCounter = ( m_delayCounter + 1 ) % 16;
-		return isUpdate;
 	}
 	
 	private void despawn( )

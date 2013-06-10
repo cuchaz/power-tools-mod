@@ -20,13 +20,13 @@ public class ItemChainsaw extends ItemOilBasedTool
 	private static final int DurabilityLostToEntity = 5; //
 	private static final float WoodEfficiency = 1.0f; // 0-12 (2,4,6,8,12 : wood,stone,iron,diamond,gold)
 	private static final float LeavesEfficiency = 12.0f;
-	private static final int OilPowerLength = 160;
+	private static final int OilPowerLength = 16;
 	
 	public ItemChainsaw( int itemId )
 	{
 		super( itemId, OilPowerLength );
-		
 		setMaxDamage( MaxUses );
+		setUnlocalizedName( "chainsaw" );
 	}
 	
 	@Override

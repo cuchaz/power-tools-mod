@@ -40,6 +40,7 @@ public class ItemOilBasedTool extends Item
 	// data members
 	private int m_oilPowerLength;
 	private ToolStates<State> m_states;
+	private DelayTimer m_delayTimer;
 	
 	public ItemOilBasedTool( int itemId, int oilPowerLength )
 	{
@@ -49,12 +50,18 @@ public class ItemOilBasedTool extends Item
 		setCreativeTab( CreativeTabs.tabTools );
 		
 		m_oilPowerLength = oilPowerLength;
-		m_states = new ToolStates<State>( new State() );
+		m_states = new ToolStates<State>( this, new State() );
+		m_delayTimer = new DelayTimer( 10 );
 	}
 	
 	@Override
 	public void onUpdate( ItemStack itemStack, World world, Entity entityUser, int itemInventoryId, boolean isCurrentItem )
 	{
+		if( !m_delayTimer.isDelayedUpdate() )
+		{
+			return;
+		}
+		
 		// get the player if possible
 		EntityPlayer player = getPlayerFromEntity( entityUser );
 		if( player == null )
@@ -62,12 +69,15 @@ public class ItemOilBasedTool extends Item
 			return;
 		}
 		
-		updateOilConsumption( player, itemStack );
+		// only update oil consumption
+		updateOilConsumption( player );
 	}
 	
 	@Override
 	public boolean onEntitySwing( EntityLiving entityLiving, ItemStack itemStack )
 	{
+		// NOTE: this function seems to be purely cosmetic
+		
 		final boolean AbortSwing = true;
 		final boolean AllowSwing = false;
 		
@@ -78,7 +88,7 @@ public class ItemOilBasedTool extends Item
 			return AllowSwing;
 		}
 		
-		if( isPowered( player, itemStack ) )
+		if( isPowered( player ) )
 		{
 			return AllowSwing;
 		}
@@ -99,13 +109,14 @@ public class ItemOilBasedTool extends Item
 		}
 		
 		// is the player even wielding this tool?
-		if( player.getHeldItem() != null && player.getHeldItem().getItem().itemID != itemID )
+		ItemStack itemStack = player.getHeldItem();
+		if( itemStack != null && itemStack.getItem().itemID != itemID )
 		{
 			return;
 		}
 		
 		// if we're not powered, blocks are infinitely hard
-		if( !isPowered( player, player.getHeldItem() ) )
+		if( !powerUp( player ) )
 		{
 			event.newSpeed = 0.0f;
 		}
@@ -124,26 +135,22 @@ public class ItemOilBasedTool extends Item
         return true;
     }
 	
-	protected void updateOilConsumption( EntityPlayer player, ItemStack itemStack )
+	private void updateOilConsumption( EntityPlayer player )
 	{
-		State state = m_states.getState( itemStack );
+		State state = m_states.getState( player );
 		
 		// consume power
 		state.powerCountdown = Math.max( state.powerCountdown - 1, 0 );
-		
-		// UNDONE: need to fix client/server sync on item consumption
-		// maybe only consume items on the server, but keep power timer on client?
-		
-		// TEMP
-		if( state.powerCountdown > 0 )
-		{
-			System.out.println( ( player.worldObj.isRemote ? "CLIENT" : "SERVER" ) + ": " + getClass().getSimpleName() + ": oil power: " + state.powerCountdown );
-		}
 	}
 	
-	protected boolean isPowered( EntityPlayer player, ItemStack itemStack )
+	private boolean isPowered( EntityPlayer player )
 	{
-		State state = m_states.getState( itemStack );
+		return m_states.getState( player ).powerCountdown > 0;
+	}
+	
+	private boolean powerUp( EntityPlayer player )
+	{
+		State state = m_states.getState( player );
 		
 		// if we're already powered, then we're already powered
 		if( state.powerCountdown > 0 )
@@ -151,7 +158,7 @@ public class ItemOilBasedTool extends Item
 			return true;
 		}
 		
-		// if we have some oil, then we're powered
+		// if we have some oil, then we can power up
 		if( consumeOil( player ) )
 		{
 			state.powerCountdown = m_oilPowerLength;

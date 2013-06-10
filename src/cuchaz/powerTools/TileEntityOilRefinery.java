@@ -24,7 +24,7 @@ public class TileEntityOilRefinery extends TileEntity
 	private static final int OilPerCoal = 2;
 	
 	private InventoryBasic m_inventory;
-	private int m_delayCounter;
+	private DelayTimer m_delayTimer;
 	private int m_processingTimer;
 	private int m_wheelFrame;
 	private int m_oilFrame;
@@ -32,7 +32,7 @@ public class TileEntityOilRefinery extends TileEntity
 	public TileEntityOilRefinery( )
 	{
 		m_inventory = new InventoryBasic( InventoryName, false, InventorySize );
-		m_delayCounter = 0;
+		m_delayTimer = new DelayTimer( 6 );
 		m_processingTimer = 0;
 		m_wheelFrame = 0;
 		m_oilFrame = 0;
@@ -141,17 +141,10 @@ public class TileEntityOilRefinery extends TileEntity
 		}
 	}
 	
-	private boolean isDelayedUpdate( )
-	{
-		boolean isDelayedUpdate = m_delayCounter == 0;
-		m_delayCounter = ( m_delayCounter + 1 ) % 6;
-		return isDelayedUpdate;
-	}
-	
 	@Override
 	public void updateEntity( )
 	{
-		if( isDelayedUpdate() )
+		if( m_delayTimer.isDelayedUpdate() )
 		{
 			boolean isPowered = isPowered();
 			boolean wheelsUpdated = updateWheels( isPowered );

@@ -18,7 +18,7 @@ public class ItemJackhammer extends ItemOilBasedTool
 	private static final int DurabilityLostToHardBlock = 1; // should be small fraction of MaxUses
 	private static final int DurabilityLostToOther = 20; //
 	private static final int DurabilityLostToEntity = 5; //
-	private static final int OilPowerLength = 350;
+	private static final int OilPowerLength = 35;
 	
 	private static final Material[] HardMaterials =
 	{
@@ -30,8 +30,8 @@ public class ItemJackhammer extends ItemOilBasedTool
 	public ItemJackhammer( int itemId )
 	{
 		super( itemId, OilPowerLength );
-		
 		setMaxDamage( MaxUses );
+		setUnlocalizedName( "jackhammer" );
 	}
 	
 	@Override

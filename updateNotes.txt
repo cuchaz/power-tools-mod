@@ -6,10 +6,10 @@ added new jackhammer tool!
 drills now mine ores individually, albeit slowly
 power tools without oil will no longer play the swing animation
 power tools can now be used to break grass, torches, etc.
-added oil to the Forge oil dictionary
+added oil to the Forge ore dictionary
 
 BIG FIXES
 fixed several bugs related to oil consumption. code in multiplayer client/server environments is hard to get right. =)
 
 PHANTOM CHANGES
-removed right-click digging
+removed right-click digging. It was buggy anyway
