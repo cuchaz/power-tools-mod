@@ -11,13 +11,28 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="786"
-   height="480.42166"
+   height="480"
    id="svg2"
    version="1.1"
    inkscape:version="0.48.3.1 r9886"
-   sodipodi:docname="oilRefinery.svg">
+   sodipodi:docname="oilRefinery.svg"
+   inkscape:export-filename="/home/jeff/minecraft/Power Tools/media/ads/oilRefinery.png"
+   inkscape:export-xdpi="56.25"
+   inkscape:export-ydpi="56.25">
   <defs
-     id="defs4" />
+     id="defs4">
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath3929">
+      <rect
+         y="245.76486"
+         x="-2.383055"
+         height="480"
+         width="786"
+         id="rect3932"
+         style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:10;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    </clipPath>
+  </defs>
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -26,8 +41,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.76378328"
-     inkscape:cx="483.19365"
-     inkscape:cy="321.13527"
+     inkscape:cx="357.22714"
+     inkscape:cy="246.78446"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -39,7 +54,9 @@
      inkscape:window-height="715"
      inkscape:window-x="0"
      inkscape:window-y="25"
-     inkscape:window-maximized="1" />
+     inkscape:window-maximized="1"
+     showguides="true"
+     inkscape:guide-bbox="true" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -48,7 +65,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -56,40 +73,99 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(2.383055,-245.3432)">
+     transform="translate(2.383055,-245.76486)">
     <image
-       y="245.3432"
+       y="245.76489"
        x="-2.383055"
        id="image2993"
        xlink:href="file:///home/jeff/minecraft/Power%20Tools/media/raw%20ss/2013-05-27_21.51.48.png"
        height="480"
-       width="854" />
+       width="854"
+       clip-path="url(#clipPath3929)"
+       transform="matrix(1,0,0,1.0041667,0,-2.0240687)" />
     <flowRoot
        xml:space="preserve"
+       id="flowRoot3007-3"
+       style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:none;fill-opacity:1;stroke:#000000;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans;stroke-opacity:1;stroke-width:16;stroke-miterlimit:4;stroke-dasharray:none"
+       transform="translate(439.96365,-151.23403)"><flowRegion
+         id="flowRegion3009-9"><rect
+           id="rect3011-0"
+           width="440.34814"
+           height="99.037926"
+           x="10.356511"
+           y="526.76929"
+           style="fill:none;fill-opacity:1;stroke:#000000;stroke-opacity:1;stroke-width:16;stroke-miterlimit:4;stroke-dasharray:none" /></flowRegion><flowPara
+         id="flowPara3015-3"
+         style="font-size:40px;font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;fill:none;fill-opacity:1;stroke:#000000;font-family:Minercraftory;-inkscape-font-specification:Minercraftory Italic;stroke-opacity:1;stroke-width:16;stroke-miterlimit:4;stroke-dasharray:none">Oil Refinery</flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
        id="flowRoot3007"
-       style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
-       transform="translate(471.78958,-149.79447)"><flowRegion
+       style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#fff349;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+       transform="translate(439.96365,-151.23403)"><flowRegion
          id="flowRegion3009"><rect
            id="rect3011"
-           width="273.15298"
-           height="103.56511"
+           width="440.34814"
+           height="99.037926"
            x="10.356511"
-           y="526.76929" /></flowRegion><flowPara
+           y="526.76929"
+           style="fill:#fff349;fill-opacity:1;stroke:none" /></flowRegion><flowPara
          id="flowPara3015"
-         style="font-size:48px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#ffffff;fill-opacity:1;font-family:URW Gothic L;-inkscape-font-specification:URW Gothic L Book">Oil Refinery</flowPara></flowRoot>    <flowRoot
+         style="font-size:40px;font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#fff349;fill-opacity:1;stroke:none;font-family:Minercraftory;-inkscape-font-specification:Minercraftory Italic">Oil Refinery</flowPara></flowRoot>    <flowRoot
        xml:space="preserve"
        id="flowRoot3019"
-       style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
-       transform="translate(356.28679,36.546691)"><flowRegion
+       style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Coolvetica;-inkscape-font-specification:Coolvetica"
+       transform="translate(325.57999,37.705731)"><flowRegion
          id="flowRegion3021"><rect
            id="rect3023"
-           width="383.19089"
-           height="104.85968"
+           width="414.74225"
+           height="90.011986"
            x="25.891277"
            y="607.03223"
-           style="text-align:end;text-anchor:end" /></flowRegion><flowPara
+           style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Coolvetica;-inkscape-font-specification:Coolvetica" /></flowRegion><flowPara
          id="flowPara3027"
-         style="text-align:end;text-anchor:end;fill:#ffffff;fill-opacity:1">Produces oil efficiently</flowPara><flowPara
+         style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Coolvetica;-inkscape-font-specification:Coolvetica">Produces oil efficiently</flowPara><flowPara
          id="flowPara2995"
-         style="text-align:end;text-anchor:end;fill:#ffffff;fill-opacity:1">Needs running water to work</flowPara></flowRoot>  </g>
+         style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Coolvetica;-inkscape-font-specification:Coolvetica">Needs running water to work</flowPara></flowRoot>    <rect
+       style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:10;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3973"
+       width="180.67715"
+       height="89.030487"
+       x="12.819005"
+       y="597.46515"
+       rx="3.2613204"
+       ry="3.2257423" />
+    <image
+       y="599.18225"
+       x="14.735896"
+       id="image3000"
+       xlink:href="file:///home/jeff/minecraft/Power%20Tools/media/ads/recipeRefinery.png"
+       height="85.271713"
+       width="176.95113"
+       style="stroke:none" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot4134-9"
+       style="font-size:24px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:none;fill-opacity:1;stroke:#000000;font-family:BigNoodleTitling;-inkscape-font-specification:BigNoodleTitling Bold;stroke-opacity:1;stroke-width:4;stroke-miterlimit:4;stroke-dasharray:none"
+       transform="translate(-6.35823,266.17465)"><flowRegion
+         id="flowRegion4136-4"><rect
+           id="rect4138-2"
+           width="257.22324"
+           height="31.496719"
+           x="22.310179"
+           y="422.25601"
+           style="font-size:24px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:none;fill-opacity:1;font-family:BigNoodleTitling;-inkscape-font-specification:BigNoodleTitling Bold;stroke:#000000;stroke-opacity:1;stroke-width:4;stroke-miterlimit:4;stroke-dasharray:none" /></flowRegion><flowPara
+         id="flowPara4140-0"
+         style="font-size:24px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:none;fill-opacity:1;font-family:BigNoodleTitling;-inkscape-font-specification:BigNoodleTitling Bold;stroke:#000000;stroke-opacity:1;stroke-width:4;stroke-miterlimit:4;stroke-dasharray:none">1 Oil, 8 Iron Ingots</flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot4134"
+       style="font-size:24px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:BigNoodleTitling;-inkscape-font-specification:BigNoodleTitling Bold"
+       transform="translate(-6.3582302,266.17465)"><flowRegion
+         id="flowRegion4136"><rect
+           id="rect4138"
+           width="257.22324"
+           height="31.496719"
+           x="22.310179"
+           y="422.25601"
+           style="font-size:24px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#ffffff;fill-opacity:1;font-family:BigNoodleTitling;-inkscape-font-specification:BigNoodleTitling Bold" /></flowRegion><flowPara
+         id="flowPara4140"
+         style="font-size:24px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#ffffff;fill-opacity:1;font-family:BigNoodleTitling;-inkscape-font-specification:BigNoodleTitling Bold">1 Oil, 8 Iron Ingots</flowPara></flowRoot>  </g>
 </svg>

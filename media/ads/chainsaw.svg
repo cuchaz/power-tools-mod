@@ -15,8 +15,8 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.3.1 r9886"
-   sodipodi:docname="shaftDrillBlocks.svg"
-   inkscape:export-filename="/home/jeff/minecraft/Power Tools/media/ads/shaftDrillBlocks.png"
+   sodipodi:docname="chainsaw.svg"
+   inkscape:export-filename="/home/jeff/minecraft/Power Tools/media/ads/chainsaw.png"
    inkscape:export-xdpi="56.200001"
    inkscape:export-ydpi="56.200001">
   <defs
@@ -52,8 +52,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.76378328"
-     inkscape:cx="403.16214"
-     inkscape:cy="242.35886"
+     inkscape:cx="313.37695"
+     inkscape:cy="187.69068"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -87,18 +87,11 @@
        y="245.76489"
        x="-2.383055"
        id="image2993"
-       xlink:href="file:///home/jeff/minecraft/Power%20Tools/media/raw%20ss/2013-05-27_21.50.31.png"
+       xlink:href="file:///home/jeff/minecraft/Power%20Tools/media/raw%20ss/2013-06-11_22.57.55.png"
        height="480"
        width="854"
        clip-path="url(#clipPath3929)"
        transform="matrix(1,0,0,1.0041667,0,-2.0240698)" />
-    <image
-       y="472.76486"
-       x="548.49493"
-       id="image3004"
-       xlink:href="file:///home/jeff/minecraft/Power%20Tools/media/ads/shaftDrillHeld.png"
-       height="253"
-       width="239" />
     <g
        id="g4072"
        transform="translate(0,-28)">
@@ -115,7 +108,7 @@
          style="stroke:none"
          width="176.95113"
          height="85.271713"
-         xlink:href="file:///home/jeff/minecraft/Power%20Tools/media/ads/recipeShaftDrill.png"
+         xlink:href="file:///home/jeff/minecraft/Power%20Tools/media/ads/recipeChainsaw.png"
          id="image3000"
          x="595.85449"
          y="285.76498" />
@@ -124,7 +117,7 @@
        xml:space="preserve"
        id="flowRoot3007-3"
        style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:none;stroke:#000000;stroke-width:16;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
-       transform="translate(20.791971,-53.380767)"><flowRegion
+       transform="translate(19.482698,-148.95762)"><flowRegion
          id="flowRegion3009-9"><rect
            id="rect3011-0"
            width="440.34814"
@@ -133,11 +126,11 @@
            y="526.76929"
            style="fill:none;stroke:#000000;stroke-width:16;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" /></flowRegion><flowPara
          id="flowPara3015-3"
-         style="font-size:40px;font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;fill:none;stroke:#000000;stroke-width:16;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;font-family:Minercraftory;-inkscape-font-specification:Minercraftory Italic">Shaft Drill</flowPara></flowRoot>    <flowRoot
+         style="font-size:40px;font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;fill:none;stroke:#000000;stroke-width:16;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;font-family:Minercraftory;-inkscape-font-specification:Minercraftory Italic">Chainsaw</flowPara></flowRoot>    <flowRoot
        xml:space="preserve"
        id="flowRoot3007"
        style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#fff349;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
-       transform="translate(20.791971,-53.380767)"><flowRegion
+       transform="translate(19.482698,-148.95762)"><flowRegion
          id="flowRegion3009"><rect
            id="rect3011"
            width="440.34814"
@@ -146,25 +139,25 @@
            y="526.76929"
            style="fill:#fff349;fill-opacity:1;stroke:none" /></flowRegion><flowPara
          id="flowPara3015"
-         style="font-size:40px;font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#fff349;fill-opacity:1;stroke:none;font-family:Minercraftory;-inkscape-font-specification:Minercraftory Italic">Shaft Drill</flowPara></flowRoot>    <flowRoot
+         style="font-size:40px;font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#fff349;fill-opacity:1;stroke:none;font-family:Minercraftory;-inkscape-font-specification:Minercraftory Italic">Chainsaw</flowPara></flowRoot>    <flowRoot
        xml:space="preserve"
        id="flowRoot3019"
        style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Coolvetica;-inkscape-font-specification:Coolvetica"
-       transform="translate(-9.9816943,6.0083124)"><flowRegion
+       transform="translate(9.6573842,7.3175843)"><flowRegion
          id="flowRegion3021"><rect
            id="rect3023"
-           width="414.74225"
-           height="90.011986"
+           width="491.98929"
+           height="88.70269"
            x="25.891277"
            y="607.03223"
            style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Coolvetica;-inkscape-font-specification:Coolvetica" /></flowRegion><flowPara
-         id="flowPara2995-8"
-         style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Coolvetica;-inkscape-font-specification:Coolvetica">Digs a 1x2x2 chunk of blocks</flowPara><flowPara
-         style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Coolvetica;-inkscape-font-specification:Coolvetica"
-         id="flowPara3827">Great for digging a mine shaft!</flowPara></flowRoot>    <flowRoot
+         style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Coolvetica;-inkscape-font-specification:Coolvetica"
+         id="flowPara3827">Fell an entire tree with a single cut!</flowPara><flowPara
+         style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Coolvetica;-inkscape-font-specification:Coolvetica"
+         id="flowPara3797">Watch it fall and shower you with riches</flowPara></flowRoot>    <flowRoot
        xml:space="preserve"
        id="flowRoot4134-4-1"
-       style="font-size:24px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:none;fill-opacity:1;stroke:#000000;font-family:BigNoodleTitling;-inkscape-font-specification:BigNoodleTitling Bold;stroke-opacity:1;stroke-width:4;stroke-miterlimit:4;stroke-dasharray:none"
+       style="font-size:24px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:none;stroke:#000000;stroke-width:4;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;font-family:BigNoodleTitling;-inkscape-font-specification:BigNoodleTitling Bold"
        transform="translate(569.36373,-77.018357)"><flowRegion
          id="flowRegion4136-9-6"><rect
            id="rect4138-6-2"
@@ -172,12 +165,12 @@
            height="60.539009"
            x="22.310179"
            y="422.25601"
-           style="font-size:24px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:end;text-anchor:end;fill:none;fill-opacity:1;font-family:BigNoodleTitling;-inkscape-font-specification:BigNoodleTitling Bold;stroke:#000000;stroke-opacity:1;stroke-width:4;stroke-miterlimit:4;stroke-dasharray:none" /></flowRegion><flowPara
-         style="font-size:24px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:end;text-anchor:end;fill:none;fill-opacity:1;font-family:BigNoodleTitling;-inkscape-font-specification:BigNoodleTitling Bold;stroke:#000000;stroke-opacity:1;stroke-width:4;stroke-miterlimit:4;stroke-dasharray:none"
+           style="font-size:24px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:end;text-anchor:end;fill:none;stroke:#000000;stroke-width:4;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;font-family:BigNoodleTitling;-inkscape-font-specification:BigNoodleTitling Bold" /></flowRegion><flowPara
+         style="font-size:24px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:end;text-anchor:end;fill:none;stroke:#000000;stroke-width:4;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;font-family:BigNoodleTitling;-inkscape-font-specification:BigNoodleTitling Bold"
          id="flowPara3835-9">2 Redstone, 2 Sticks,</flowPara><flowPara
-         style="font-size:24px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:end;text-anchor:end;fill:none;fill-opacity:1;font-family:BigNoodleTitling;-inkscape-font-specification:BigNoodleTitling Bold;stroke:#000000;stroke-opacity:1;stroke-width:4;stroke-miterlimit:4;stroke-dasharray:none"
-         id="flowPara3841-6">3 Iron Ingots</flowPara><flowPara
-         style="font-size:24px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:end;text-anchor:end;fill:none;fill-opacity:1;font-family:BigNoodleTitling;-inkscape-font-specification:BigNoodleTitling Bold;stroke:#000000;stroke-opacity:1;stroke-width:4;stroke-miterlimit:4;stroke-dasharray:none"
+         style="font-size:24px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:end;text-anchor:end;fill:none;stroke:#000000;stroke-width:4;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;font-family:BigNoodleTitling;-inkscape-font-specification:BigNoodleTitling Bold"
+         id="flowPara3841-6">2 Iron Ingots</flowPara><flowPara
+         style="font-size:24px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:end;text-anchor:end;fill:none;stroke:#000000;stroke-width:4;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;font-family:BigNoodleTitling;-inkscape-font-specification:BigNoodleTitling Bold"
          id="flowPara3831-1" /></flowRoot>    <flowRoot
        xml:space="preserve"
        id="flowRoot4134-4"
@@ -193,7 +186,14 @@
          style="font-size:24px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:end;text-anchor:end;fill:#ffffff;fill-opacity:1;font-family:BigNoodleTitling;-inkscape-font-specification:BigNoodleTitling Bold"
          id="flowPara3835">2 Redstone, 2 Sticks,</flowPara><flowPara
          style="font-size:24px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:end;text-anchor:end;fill:#ffffff;fill-opacity:1;font-family:BigNoodleTitling;-inkscape-font-specification:BigNoodleTitling Bold"
-         id="flowPara3841">3 Iron Ingots</flowPara><flowPara
+         id="flowPara3841">2 Iron Ingots</flowPara><flowPara
          style="font-size:24px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:end;text-anchor:end;fill:#ffffff;fill-opacity:1;font-family:BigNoodleTitling;-inkscape-font-specification:BigNoodleTitling Bold"
-         id="flowPara3831" /></flowRoot>  </g>
+         id="flowPara3831" /></flowRoot>    <image
+       y="434.91501"
+       x="567.65051"
+       id="image3792"
+       xlink:href="file:///home/jeff/minecraft/Power%20Tools/media/ads/chainsawHeld.png"
+       height="291"
+       width="219" />
+  </g>
 </svg>
