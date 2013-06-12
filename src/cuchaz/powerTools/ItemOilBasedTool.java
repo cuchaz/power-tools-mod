@@ -110,7 +110,7 @@ public class ItemOilBasedTool extends Item
 		
 		// is the player even wielding this tool?
 		ItemStack itemStack = player.getHeldItem();
-		if( itemStack != null && itemStack.getItem().itemID != itemID )
+		if( itemStack == null || itemStack.getItem().itemID != itemID )
 		{
 			return;
 		}
