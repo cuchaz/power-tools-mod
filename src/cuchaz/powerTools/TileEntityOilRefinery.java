@@ -3,6 +3,8 @@ package cuchaz.powerTools;
 import java.util.ArrayList;
 import java.util.List;
 
+import cuchaz.modsShared.DelayTimer;
+
 import net.minecraft.block.Block;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
