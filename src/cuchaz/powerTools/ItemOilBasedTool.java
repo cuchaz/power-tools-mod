@@ -193,9 +193,6 @@ public class ItemOilBasedTool extends Item
 		assert( oilStack.stackSize > 0 );
 		oilStack.stackSize--;
 		
-		// TEMP
-		System.out.println( ( player.worldObj.isRemote ? "CLIENT" : "SERVER" ) + ": " + getClass().getSimpleName() + ": consumed 1 oil! " + oilStack.stackSize + " oil remaining." );
-		
 		// remove empty stacks
 		if( oilStack.stackSize <= 0 )
 		{
