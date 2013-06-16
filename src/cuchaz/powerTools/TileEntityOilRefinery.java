@@ -15,6 +15,7 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
+import cuchaz.modsShared.DelayTimer;
 
 public class TileEntityOilRefinery extends TileEntity
 {

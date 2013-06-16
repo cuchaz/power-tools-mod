@@ -10,6 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
+import cuchaz.modsShared.DelayTimer;
 
 public class TileEntityTreeHarvester extends TileEntity
 {
