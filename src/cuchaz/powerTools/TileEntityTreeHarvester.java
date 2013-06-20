@@ -7,6 +7,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import cuchaz.modsShared.BlockUtils;
 import cuchaz.modsShared.DelayTimer;
@@ -40,7 +41,7 @@ public class TileEntityTreeHarvester extends TileEntity
 		List<ChunkCoordinates> blocks = BlockUtils.graphSearch( worldObj, xCoord, yCoord, zCoord, 10000, new BlockUtils.BlockValidator( )
 		{
 			@Override
-			public boolean isValid( World world, int x, int y, int z )
+			public boolean isValid( IBlockAccess world, int x, int y, int z )
 			{
 				// is this block wood/leaves?
 				int blockId = worldObj.getBlockId( x, y, z );
