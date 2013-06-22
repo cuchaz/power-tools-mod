@@ -3,8 +3,6 @@ package cuchaz.powerTools;
 import java.util.ArrayList;
 import java.util.List;
 
-import cuchaz.modsShared.DelayTimer;
-
 import net.minecraft.block.Block;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
@@ -17,6 +15,7 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
+import cuchaz.modsShared.DelayTimer;
 
 public class TileEntityOilRefinery extends TileEntity
 {
