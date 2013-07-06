@@ -16,9 +16,9 @@
    version="1.1"
    inkscape:version="0.48.4 r9939"
    sodipodi:docname="powerTools.svg"
-   inkscape:export-filename="/home/jeff/minecraft/Power Tools/media/ads/powerTools.big.png"
-   inkscape:export-xdpi="112.4"
-   inkscape:export-ydpi="112.4">
+   inkscape:export-filename="/home/jeff/minecraft/Power Tools/media/ads/powerTools.png"
+   inkscape:export-xdpi="56.20063"
+   inkscape:export-ydpi="56.20063">
   <defs
      id="defs4">
     <linearGradient
@@ -283,8 +283,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.1344201"
-     inkscape:cx="393"
-     inkscape:cy="240.21083"
+     inkscape:cx="536.45459"
+     inkscape:cy="233.68882"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -292,8 +292,8 @@
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-bottom="0"
-     inkscape:window-width="1366"
-     inkscape:window-height="715"
+     inkscape:window-width="1920"
+     inkscape:window-height="1027"
      inkscape:window-x="0"
      inkscape:window-y="25"
      inkscape:window-maximized="1" />
@@ -319,7 +319,7 @@
        y="245.76489"
        x="-2.383055"
        id="image2993"
-       xlink:href="file:///home/jeff/minecraft/Power%20Tools/media/raw%20ss/2013-05-29_00.24.50.png"
+       xlink:href="file:///home/jeff/minecraft/Power%20Tools/media/raw%20ss/2013-07-05_18.12.19.png"
        height="480"
        width="854"
        clip-path="url(#clipPath3929)"
@@ -339,8 +339,8 @@
        sodipodi:cy="251.29907"
        sodipodi:rx="45.824516"
        sodipodi:ry="45.824516"
-       d="m 192.46297,251.29907 c 0,25.30818 -20.51633,45.82452 -45.82451,45.82452 -25.30818,0 -45.82452,-20.51634 -45.82452,-45.82452 0,-25.30818 20.51634,-45.82451 45.82452,-45.82451 25.30818,0 45.82451,20.51633 45.82451,45.82451 z"
-       transform="matrix(1.8285715,0,0,1.8285715,44.252751,69.518684)" />
+       d="m 192.46297,251.29907 a 45.824516,45.824516 0 1 1 -91.64903,0 45.824516,45.824516 0 1 1 91.64903,0 z"
+       transform="matrix(1.8285715,0,0,1.8285715,44.252751,37.518684)" />
     <path
        sodipodi:type="arc"
        style="color:#000000;fill:url(#radialGradient4420-7);fill-opacity:1;stroke:none;stroke-width:10.99980068;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
@@ -349,8 +349,8 @@
        sodipodi:cy="251.29907"
        sodipodi:rx="45.824516"
        sodipodi:ry="45.824516"
-       d="m 192.46297,251.29907 c 0,25.30818 -20.51633,45.82452 -45.82451,45.82452 -25.30818,0 -45.82452,-20.51634 -45.82452,-45.82452 0,-25.30818 20.51634,-45.82451 45.82452,-45.82451 25.30818,0 45.82451,20.51633 45.82451,45.82451 z"
-       transform="matrix(1.8285715,0,0,1.8285715,221.00446,76.065043)" />
+       d="m 192.46297,251.29907 a 45.824516,45.824516 0 1 1 -91.64903,0 45.824516,45.824516 0 1 1 91.64903,0 z"
+       transform="matrix(1.8285715,0,0,1.8285715,221.00446,44.065043)" />
     <path
        sodipodi:type="arc"
        style="color:#000000;fill:url(#radialGradient4420-9);fill-opacity:1;stroke:none;stroke-width:10.99980068;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
@@ -359,8 +359,8 @@
        sodipodi:cy="251.29907"
        sodipodi:rx="45.824516"
        sodipodi:ry="45.824516"
-       d="m 192.46297,251.29907 c 0,25.30818 -20.51633,45.82452 -45.82451,45.82452 -25.30818,0 -45.82452,-20.51634 -45.82452,-45.82452 0,-25.30818 20.51634,-45.82451 45.82452,-45.82451 25.30818,0 45.82451,20.51633 45.82451,45.82451 z"
-       transform="matrix(1.8285715,0,0,1.8285715,379.42636,66.900139)" />
+       d="m 192.46297,251.29907 a 45.824516,45.824516 0 1 1 -91.64903,0 45.824516,45.824516 0 1 1 91.64903,0 z"
+       transform="matrix(1.8285715,0,0,1.8285715,379.42636,34.900139)" />
     <path
        sodipodi:type="arc"
        style="color:#000000;fill:url(#radialGradient4328);fill-opacity:1;stroke:none;stroke-width:10.99980068;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
@@ -369,8 +369,8 @@
        sodipodi:cy="251.29907"
        sodipodi:rx="45.824516"
        sodipodi:ry="45.824516"
-       d="m 192.46297,251.29907 c 0,25.30818 -20.51633,45.82452 -45.82451,45.82452 -25.30818,0 -45.82452,-20.51634 -45.82452,-45.82452 0,-25.30818 20.51634,-45.82451 45.82452,-45.82451 25.30818,0 45.82451,20.51633 45.82451,45.82451 z"
-       transform="matrix(1.8285715,0,0,1.8285715,-123.33405,66.900155)" />
+       d="m 192.46297,251.29907 a 45.824516,45.824516 0 1 1 -91.64903,0 45.824516,45.824516 0 1 1 91.64903,0 z"
+       transform="matrix(1.8285715,0,0,1.8285715,-123.33405,34.900155)" />
     <g
        style="display:inline"
        id="g3820"
@@ -418,7 +418,7 @@
              width="105.54066"
              id="rect3834-9" /></flowRegion><flowPara
            style="font-size:28px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;fill:none;stroke:#000000;stroke-width:9;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;font-family:Minercraftory;-inkscape-font-specification:Minercraftory Italic"
-           id="flowPara3836-5">v1.1</flowPara></flowRoot>      <flowRoot
+           id="flowPara3836-5">v1.2</flowPara></flowRoot>      <flowRoot
          transform="translate(7.800691,230.53048)"
          style="font-size:28px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#fff349;fill-opacity:1;stroke:none;display:inline;font-family:Minercraftory;-inkscape-font-specification:Minercraftory Bold"
          id="flowRoot3830"
@@ -431,12 +431,12 @@
              width="105.54066"
              id="rect3834" /></flowRegion><flowPara
            style="font-size:28px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#fff349;fill-opacity:1;font-family:Minercraftory;-inkscape-font-specification:Minercraftory Bold Italic"
-           id="flowPara3836">v1.1</flowPara></flowRoot>    </g>
+           id="flowPara3836">v1.2</flowPara></flowRoot>    </g>
     <flowRoot
        xml:space="preserve"
        id="flowRoot3892"
        style="font-size:40px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;font-family:BigNoodleTitling;-inkscape-font-specification:BigNoodleTitling Bold"
-       transform="translate(-47.475882,417.7353)"><flowRegion
+       transform="translate(232.52412,417.7353)"><flowRegion
          id="flowRegion3894"><rect
            id="rect3896"
            width="492.7319"
@@ -509,7 +509,7 @@
            id="flowPara3023-6-9">by</flowPara></flowRoot>    </g>
     <g
        id="g4203"
-       transform="translate(-7.5457295,43.906679)">
+       transform="translate(-7.5457295,11.906679)">
       <path
          id="rect4166"
          transform="translate(-2.383055,245.3432)"
@@ -519,14 +519,14 @@
       <image
          width="85.52446"
          height="85.52446"
-         xlink:href="file:///home/jeff/minecraft/Power%20Tools/src/mods/powerTools/textures/items/chainsaw.png"
+         xlink:href="file:///home/jeff/minecraft/Power%20Tools/src/assets/powertools/textures/items/chainsaw.png"
          id="image3994"
          x="462.16809"
          y="451.64218" />
     </g>
     <g
        id="g4160"
-       transform="translate(8.5897375,71.806291)">
+       transform="translate(8.5897375,39.806291)">
       <path
          id="rect4133"
          transform="translate(-2.383055,245.3432)"
@@ -536,14 +536,14 @@
       <image
          width="85.52446"
          height="85.52446"
-         xlink:href="file:///home/jeff/minecraft/Power%20Tools/src/mods/powerTools/textures/items/drillWideBore.png"
+         xlink:href="file:///home/jeff/minecraft/Power%20Tools/src/assets/powertools/textures/items/drillWideBore.png"
          id="image4016"
          x="256.36823"
          y="420.95023" />
     </g>
     <g
        id="g4400"
-       transform="translate(-4.6876345,42.328554)">
+       transform="translate(-4.6876345,10.328554)">
       <g
          id="g4227">
         <path
@@ -557,14 +557,14 @@
          style="fill:#15e30f;fill-opacity:0.38356168;stroke:none"
          width="85.52446"
          height="85.52446"
-         xlink:href="file:///home/jeff/minecraft/Power%20Tools/src/mods/powerTools/textures/items/jackhammer.png"
+         xlink:href="file:///home/jeff/minecraft/Power%20Tools/src/assets/powertools/textures/items/jackhammer.png"
          id="image4027"
          x="615.5296"
          y="453.11029" />
     </g>
     <g
        id="g4128"
-       transform="translate(30.662705,-81.064167)">
+       transform="translate(30.662705,-113.06417)">
       <g
          style="stroke-width:11;stroke-miterlimit:4;stroke-dasharray:none"
          id="g4076">
@@ -579,7 +579,7 @@
          style="stroke:none;display:inline"
          width="85.52446"
          height="85.52446"
-         xlink:href="file:///home/jeff/minecraft/Power%20Tools/src/mods/powerTools/textures/items/drillShaft.png"
+         xlink:href="file:///home/jeff/minecraft/Power%20Tools/src/assets/powertools/textures/items/drillShaft.png"
          id="image4005-3"
          x="58.543762"
          y="576.53619" />
