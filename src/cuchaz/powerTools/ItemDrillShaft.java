@@ -30,6 +30,7 @@ public class ItemDrillShaft extends ItemDrill
 	}
 	
 	@Override
+	@SuppressWarnings( "incomplete-switch" )
 	public List<ChunkCoordinates> getOtherBlocksToDig( World world, int x, int y, int z, int side, EntityPlayer player )
 	{
 		// is the block closer to our feet or our eyes?

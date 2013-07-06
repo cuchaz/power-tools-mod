@@ -59,6 +59,7 @@ public class BlockOilRefinery extends BlockContainer
 	}
 	
 	@SideOnly( Side.CLIENT )
+	@SuppressWarnings( "incomplete-switch" )
 	private Icon getIcon( int side, int rotation, int wheelFrame, int oilFrame )
 	{
 		// top and bottom are easy
