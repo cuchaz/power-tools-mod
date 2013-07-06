@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChunkCoordinates;
@@ -16,7 +16,7 @@ public abstract class ItemDrill extends ItemOilBasedTool
 {
 	// settings
 	private static final int MaxUses = 400;
-	private static final int DamageVsEntity = 1; // should be 0-5
+	private static final float DamageVsEntity = 1.0f; // should be 0-5
 	private static final int Enchantability = 10; // should be 0-22
 	private static final int DurabilityLostToBlock = 1; // should be small fraction of MaxUses
 	private static final int DurabilityLostToEntity = 2; //
@@ -102,7 +102,7 @@ public abstract class ItemDrill extends ItemOilBasedTool
 	}
 	
 	@Override
-	public boolean hitEntity( ItemStack itemStack, EntityLiving entityTarget, EntityLiving entityUser )
+	public boolean hitEntity( ItemStack itemStack, EntityLivingBase entityTarget, EntityLivingBase entityUser )
 	{
 		// decrease item durability
 		itemStack.damageItem( DurabilityLostToEntity, entityUser );
@@ -152,7 +152,7 @@ public abstract class ItemDrill extends ItemOilBasedTool
 	protected abstract List<ChunkCoordinates> getOtherBlocksToDig( World world, int x, int y, int z, int side, EntityPlayer player );
 	
 	@Override
-	public int getDamageVsEntity( Entity entityTarget )
+	public float getDamageVsEntity( Entity entityTarget, ItemStack itemStack )
 	{
 		return DamageVsEntity;
 	}

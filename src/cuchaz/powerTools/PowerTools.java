@@ -6,10 +6,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.Init;
+import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.Mod.PostInit;
-import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -17,7 +15,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod( modid="cuchaz.powerTools", name="Power Tools", version="1.1.1" )
+@Mod( modid="cuchaz.powerTools", name="Power Tools", version="1.2" )
 @NetworkMod( clientSideRequired=true, serverSideRequired=true )
 public class PowerTools
 {
@@ -37,13 +35,13 @@ public class PowerTools
 	// block registration: use ids [1150,1154]
 	public static final BlockOilRefinery BlockOilRefinery = new BlockOilRefinery( 1150 );
 	
-	@PreInit
+	@EventHandler
 	public void preInit( FMLPreInitializationEvent event )
 	{
 		// nothing to do
 	}
 	
-	@Init
+	@EventHandler
 	public void load( FMLInitializationEvent event )
 	{
 		// register stuff
@@ -134,7 +132,7 @@ public class PowerTools
 		) );
 	}
 	
-	@PostInit
+	@EventHandler
 	public void postInit( FMLPostInitializationEvent event )
 	{
 		// nothing to do

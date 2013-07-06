@@ -5,7 +5,7 @@ import java.util.Random;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -96,18 +96,18 @@ public class BlockOilRefinery extends BlockContainer
 		m_iconSide = new Icon[] { null, null };
 		
 		// UNDONE: can change textures here based on state
-		blockIcon = iconRegister.registerIcon( "powerTools:oilRefineryBack" );
-		m_iconFront[0] = iconRegister.registerIcon( "powerTools:oilRefineryFront1" );
-		m_iconFront[1] = iconRegister.registerIcon( "powerTools:oilRefineryFront2" );
-		m_iconFront[2] = iconRegister.registerIcon( "powerTools:oilRefineryFront3" );
-		m_iconFront[3] = iconRegister.registerIcon( "powerTools:oilRefineryFront4" );
-		m_iconSide[0] = iconRegister.registerIcon( "powerTools:oilRefinerySide1" );
-		m_iconSide[1] = iconRegister.registerIcon( "powerTools:oilRefinerySide2" );
-		m_iconTop = iconRegister.registerIcon( "powerTools:oilRefineryTop" );
+		blockIcon = iconRegister.registerIcon( "powertools:oilRefineryBack" );
+		m_iconFront[0] = iconRegister.registerIcon( "powertools:oilRefineryFront1" );
+		m_iconFront[1] = iconRegister.registerIcon( "powertools:oilRefineryFront2" );
+		m_iconFront[2] = iconRegister.registerIcon( "powertools:oilRefineryFront3" );
+		m_iconFront[3] = iconRegister.registerIcon( "powertools:oilRefineryFront4" );
+		m_iconSide[0] = iconRegister.registerIcon( "powertools:oilRefinerySide1" );
+		m_iconSide[1] = iconRegister.registerIcon( "powertools:oilRefinerySide2" );
+		m_iconTop = iconRegister.registerIcon( "powertools:oilRefineryTop" );
 	}
 	
 	@Override
-	public void onBlockPlacedBy( World world, int x, int y, int z, EntityLiving entityUser, ItemStack itemStack )
+	public void onBlockPlacedBy( World world, int x, int y, int z, EntityLivingBase entityUser, ItemStack itemStack )
     {
 		//final int FlagCauseBlockUpdate = 1;
 		final int FlagSendChangeToClients = 2;

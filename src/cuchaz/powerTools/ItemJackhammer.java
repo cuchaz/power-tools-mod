@@ -1,21 +1,21 @@
 package cuchaz.powerTools;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemJackhammer extends ItemOilBasedTool
 {
 	// settings
 	private static final int MaxUses = 400;
-	private static final int DamageVsEntity = 1; // should be 0-5
+	private static final float DamageVsEntity = 1.0f; // should be 0-5
 	private static final int Enchantability = 10; // should be 0-22
 	private static final int DurabilityLostToHardBlock = 1; // should be small fraction of MaxUses
 	private static final int DurabilityLostToOther = 20; //
@@ -40,7 +40,7 @@ public class ItemJackhammer extends ItemOilBasedTool
 	@SideOnly( Side.CLIENT )
 	public void registerIcons( IconRegister iconRegister )
 	{
-		itemIcon = iconRegister.registerIcon( "powerTools:jackhammer" );
+		itemIcon = iconRegister.registerIcon( "powertools:jackhammer" );
 	}
 	
 	@Override
@@ -50,7 +50,7 @@ public class ItemJackhammer extends ItemOilBasedTool
 	}
 	
 	@Override
-	public boolean hitEntity( ItemStack itemStack, EntityLiving entityTarget, EntityLiving entityUser )
+	public boolean hitEntity( ItemStack itemStack, EntityLivingBase entityTarget, EntityLivingBase entityUser )
 	{
 		// decrease item durability
 		itemStack.damageItem( DurabilityLostToEntity, entityUser );
@@ -76,7 +76,7 @@ public class ItemJackhammer extends ItemOilBasedTool
 	}
 	
 	@Override
-	public int getDamageVsEntity( Entity entityTarget )
+	public float getDamageVsEntity( Entity entityTarget, ItemStack itemStack )
 	{
 		return DamageVsEntity;
 	}

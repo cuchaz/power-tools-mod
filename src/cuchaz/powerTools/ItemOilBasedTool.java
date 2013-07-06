@@ -4,7 +4,7 @@ import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -75,7 +75,7 @@ public class ItemOilBasedTool extends Item
 	}
 	
 	@Override
-	public boolean onEntitySwing( EntityLiving entityLiving, ItemStack itemStack )
+	public boolean onEntitySwing( EntityLivingBase entityLiving, ItemStack itemStack )
 	{
 		// NOTE: this function seems to be purely cosmetic
 		

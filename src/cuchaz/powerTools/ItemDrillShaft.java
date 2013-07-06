@@ -26,7 +26,7 @@ public class ItemDrillShaft extends ItemDrill
 	@SideOnly( Side.CLIENT )
 	public void registerIcons( IconRegister iconRegister )
 	{
-		itemIcon = iconRegister.registerIcon( "powerTools:drillShaft" );
+		itemIcon = iconRegister.registerIcon( "powertools:drillShaft" );
 	}
 	
 	@Override

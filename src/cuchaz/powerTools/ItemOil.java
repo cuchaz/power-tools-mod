@@ -18,6 +18,6 @@ public class ItemOil extends Item
 	@Override
 	public void registerIcons( IconRegister iconRegister )
 	{
-		itemIcon = iconRegister.registerIcon( "powerTools:oil" );
+		itemIcon = iconRegister.registerIcon( "powertools:oil" );
 	}
 }

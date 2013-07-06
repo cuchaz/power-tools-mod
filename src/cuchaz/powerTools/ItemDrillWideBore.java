@@ -23,7 +23,7 @@ public class ItemDrillWideBore extends ItemDrill
 	@SideOnly( Side.CLIENT )
 	public void registerIcons( IconRegister iconRegister )
 	{
-		itemIcon = iconRegister.registerIcon( "powerTools:drillWideBore" );
+		itemIcon = iconRegister.registerIcon( "powertools:drillWideBore" );
 	}
 	
 	@Override
