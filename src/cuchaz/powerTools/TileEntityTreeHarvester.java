@@ -7,7 +7,6 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import cuchaz.modsShared.BlockUtils;
 import cuchaz.modsShared.DelayTimer;
@@ -38,27 +37,27 @@ public class TileEntityTreeHarvester extends TileEntity
 		
 		// grab all connected wood/leaf blocks with the same meta up to a few blocks away in the xz plane
 		final int targetMeta = worldObj.getBlockMetadata( xCoord, yCoord, zCoord ) & 0x3;
-		List<ChunkCoordinates> blocks = BlockUtils.graphSearch( worldObj, xCoord, yCoord, zCoord, 10000, new BlockUtils.BlockValidator( )
+		List<ChunkCoordinates> blocks = BlockUtils.searchForBlocks( xCoord, yCoord, zCoord, 10000, new BlockUtils.BlockValidator( )
 		{
 			@Override
-			public boolean isValid( IBlockAccess world, int x, int y, int z )
+			public boolean isValid( ChunkCoordinates coords )
 			{
 				// is this block wood/leaves?
-				int blockId = worldObj.getBlockId( x, y, z );
+				int blockId = worldObj.getBlockId( coords.posX, coords.posY, coords.posZ );
 				if( blockId != Block.wood.blockID && blockId != Block.leaves.blockID )
 				{
 					return false;
 				}
 				
 				// is this block the same meta?
-				int meta = worldObj.getBlockMetadata( x, y, z ) & 0x3;
+				int meta = worldObj.getBlockMetadata( coords.posX, coords.posY, coords.posZ ) & 0x3;
 				if( meta != targetMeta )
 				{
 					return false;
 				}
 				
 				// is this block within range?
-				if( y < yCoord || BlockUtils.getXZManhattanDistance( xCoord, yCoord, zCoord, x, y, z ) > SearchSize )
+				if( coords.posY < yCoord || BlockUtils.getXZManhattanDistance( xCoord, yCoord, zCoord, coords.posX, coords.posY, coords.posZ ) > SearchSize )
 				{
 					return false;
 				}

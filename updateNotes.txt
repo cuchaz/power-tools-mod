@@ -1,4 +1,11 @@
 
+TODO LIST
+
+Make creative tabs for all the items
+Attempt to fix the block desync bug
+	maybe try to remove the already-should-be-removed block manually?
+
+
 07/05/2013
 
 Updated to Minecraft v1.6.1
