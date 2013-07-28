@@ -4,7 +4,10 @@ TODO LIST
 Make creative tabs for all the items
 Attempt to fix the block desync bug
 	maybe try to remove the already-should-be-removed block manually?
-
+make the chainsaw cut vines fast too
+	reduce durability cost for cutting leaves/vines
+make a build wand?
+make a tool that makes is easier to build down in air
 
 07/05/2013
 
