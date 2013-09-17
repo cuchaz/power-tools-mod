@@ -5,13 +5,13 @@ import java.util.Random;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
@@ -35,12 +35,31 @@ public class BlockOilRefinery extends BlockContainer
 		setResistance( 10.0F );
 		setStepSound( soundMetalFootstep );
 		setUnlocalizedName( "blockOilRefinery" );
+		setCreativeTab( CreativeTabs.tabDecorations );
 	}
 	
 	@Override
 	public TileEntity createNewTileEntity( World world )
 	{
 		return new TileEntityOilRefinery();
+	}
+	
+	@Override
+	@SideOnly( Side.CLIENT )
+	public void registerIcons( IconRegister iconRegister )
+	{
+		m_iconFront = new Icon[] { null, null, null, null };
+		m_iconSide = new Icon[] { null, null };
+		
+		// UNDONE: can change textures here based on state
+		blockIcon = iconRegister.registerIcon( "powertools:oilRefineryBack" );
+		m_iconFront[0] = iconRegister.registerIcon( "powertools:oilRefineryFront1" );
+		m_iconFront[1] = iconRegister.registerIcon( "powertools:oilRefineryFront2" );
+		m_iconFront[2] = iconRegister.registerIcon( "powertools:oilRefineryFront3" );
+		m_iconFront[3] = iconRegister.registerIcon( "powertools:oilRefineryFront4" );
+		m_iconSide[0] = iconRegister.registerIcon( "powertools:oilRefinerySide1" );
+		m_iconSide[1] = iconRegister.registerIcon( "powertools:oilRefinerySide2" );
+		m_iconTop = iconRegister.registerIcon( "powertools:oilRefineryTop" );
 	}
 	
 	@Override
@@ -71,18 +90,15 @@ public class BlockOilRefinery extends BlockContainer
 		}
 		
 		// rotate the sides
-		for( int i=0; i<rotation; i++ )
-		{
-			targetSide = targetSide.getXZNextSide();
-		}
+		targetSide = targetSide.rotateXZCcw( rotation );
 		
 		// now do the sides
 		switch( targetSide )
 		{
-			case North: return m_iconFront[oilFrame];
-			case West: return m_iconSide[wheelFrame];
-			case South: return blockIcon;
+			case North: return blockIcon;
 			case East: return m_iconSide[wheelFrame];
+			case South: return m_iconFront[oilFrame];
+			case West: return m_iconSide[wheelFrame];
 		}
 		
 		// if all else fails
@@ -90,59 +106,10 @@ public class BlockOilRefinery extends BlockContainer
 	}
 	
 	@Override
-	@SideOnly( Side.CLIENT )
-	public void registerIcons( IconRegister iconRegister )
-	{
-		m_iconFront = new Icon[] { null, null, null, null };
-		m_iconSide = new Icon[] { null, null };
-		
-		// UNDONE: can change textures here based on state
-		blockIcon = iconRegister.registerIcon( "powertools:oilRefineryBack" );
-		m_iconFront[0] = iconRegister.registerIcon( "powertools:oilRefineryFront1" );
-		m_iconFront[1] = iconRegister.registerIcon( "powertools:oilRefineryFront2" );
-		m_iconFront[2] = iconRegister.registerIcon( "powertools:oilRefineryFront3" );
-		m_iconFront[3] = iconRegister.registerIcon( "powertools:oilRefineryFront4" );
-		m_iconSide[0] = iconRegister.registerIcon( "powertools:oilRefinerySide1" );
-		m_iconSide[1] = iconRegister.registerIcon( "powertools:oilRefinerySide2" );
-		m_iconTop = iconRegister.registerIcon( "powertools:oilRefineryTop" );
-	}
-	
-	@Override
 	public void onBlockPlacedBy( World world, int x, int y, int z, EntityLivingBase entityUser, ItemStack itemStack )
     {
-		//final int FlagCauseBlockUpdate = 1;
-		final int FlagSendChangeToClients = 2;
-		//final int FlagPreventReRender = 3;
-		
-		// find the side facing the entity
-		int quadrant = MathHelper.floor_double((double)( entityUser.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-		BlockSide side = null;
-		switch( quadrant )
-		{
-			case 0:
-				side = BlockSide.East;
-			break;
-			case 1:
-				side = BlockSide.South;
-			break;
-			case 2:
-				side = BlockSide.West;
-			break;
-			case 3:
-				side = BlockSide.North;
-			break;
-		}
-		
-		// calculate the ccw north-front rotation
-		int rotation = 0;
-		while( side != BlockSide.North )
-		{
-			side = side.getXZNextSide();
-			rotation++;
-		}
-		
-		// set the offset as the block meta
-		world.setBlockMetadataWithNotify( x, y, z, rotation, FlagSendChangeToClients );
+		// save the block rotation to the metadata
+		world.setBlockMetadataWithNotify( x, y, z, BlockSide.getByYaw( entityUser.rotationYaw ).getXZOffset(), 3 );
     }
 	
 	@Override
