@@ -9,6 +9,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import cuchaz.modsShared.BlockUtils;
+import cuchaz.modsShared.BlockUtils.Neighbors;
 import cuchaz.modsShared.DelayTimer;
 
 public class TileEntityTreeHarvester extends TileEntity
@@ -64,7 +65,7 @@ public class TileEntityTreeHarvester extends TileEntity
 				
 				return true;
 			}
-		} );
+		}, Neighbors.Faces );
 		if( blocks == null )
 		{
 			return;
