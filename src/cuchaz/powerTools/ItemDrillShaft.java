@@ -50,20 +50,12 @@ public class ItemDrillShaft extends ItemDrill
 				case East:
 					if( i > 0 )
 					{
-						blocksToDig.add( new ChunkCoordinates( x, y, z+i ) );
+						blocksToDig.add( new ChunkCoordinates( x-i, y, z ) );
 					}
-					blocksToDig.add( new ChunkCoordinates( x, y+yDelta, z+i ) );
+					blocksToDig.add( new ChunkCoordinates( x-i, y+yDelta, z ) );
 				break;
 				
 				case West:
-					if( i > 0 )
-					{
-						blocksToDig.add( new ChunkCoordinates( x, y, z-i ) );
-					}
-					blocksToDig.add( new ChunkCoordinates( x, y+yDelta, z-i ) );
-				break;
-				
-				case North:
 					if( i > 0 )
 					{
 						blocksToDig.add( new ChunkCoordinates( x+i, y, z ) );
@@ -71,12 +63,20 @@ public class ItemDrillShaft extends ItemDrill
 					blocksToDig.add( new ChunkCoordinates( x+i, y+yDelta, z ) );
 				break;
 				
+				case North:
+					if( i > 0 )
+					{
+						blocksToDig.add( new ChunkCoordinates( x, y, z+i ) );
+					}
+					blocksToDig.add( new ChunkCoordinates( x, y+yDelta, z+i ) );
+				break;
+				
 				case South:
 					if( i > 0 )
 					{
-						blocksToDig.add( new ChunkCoordinates( x-i, y, z ) );
+						blocksToDig.add( new ChunkCoordinates( x, y, z-i ) );
 					}
-					blocksToDig.add( new ChunkCoordinates( x-i, y+yDelta, z ) );
+					blocksToDig.add( new ChunkCoordinates( x, y+yDelta, z-i ) );
 				break;
 			}
 		}

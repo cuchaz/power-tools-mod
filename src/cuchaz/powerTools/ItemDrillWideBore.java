@@ -41,7 +41,7 @@ public class ItemDrillWideBore extends ItemDrill
 			{
 				case North:
 				case South:
-					blocksToDig.add( new ChunkCoordinates( x, y + dim1[i], z + dim2[i] ) );
+					blocksToDig.add( new ChunkCoordinates( x + dim1[i], y + dim2[i], z ) );
 				break;
 				
 				case Top:
@@ -51,7 +51,7 @@ public class ItemDrillWideBore extends ItemDrill
 				
 				case East:
 				case West:
-					blocksToDig.add( new ChunkCoordinates( x + dim1[i], y + dim2[i], z ) );
+					blocksToDig.add( new ChunkCoordinates( x, y + dim1[i], z + dim2[i] ) );
 				break;
 			}
 		}

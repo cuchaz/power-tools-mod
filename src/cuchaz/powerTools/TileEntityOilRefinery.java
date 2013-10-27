@@ -118,7 +118,7 @@ public class TileEntityOilRefinery extends TileEntity
 	@Override
 	public void onDataPacket( INetworkManager net, Packet132TileEntityData packet )
 	{
-		readFromNBT( packet.customParam1 );
+		readFromNBT( packet.data );
 		
 		// re-render if we're on the client
 		if( worldObj.isRemote )
@@ -253,7 +253,7 @@ public class TileEntityOilRefinery extends TileEntity
 	private boolean isPowered( )
 	{
 		// along which axis are the sides?
-		boolean sidesAreNorthSouth = worldObj.getBlockMetadata( xCoord, yCoord, zCoord ) % 2 == 0;
+		boolean sidesAreNorthSouth = worldObj.getBlockMetadata( xCoord, yCoord, zCoord ) % 2 == 1;
 		
 		// get a list of the blocks on the sides
 		List<ChunkCoordinates> blocks = new ArrayList<ChunkCoordinates>();

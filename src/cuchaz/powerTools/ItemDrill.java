@@ -139,9 +139,12 @@ public abstract class ItemDrill extends ItemOilBasedTool
 		{
 			for( ChunkCoordinates coords : getOtherBlocksToDig( world, x, y, z, side, player ) )
 			{
-				if( isFillerBlock( world.getBlockId( coords.posX, coords.posY, coords.posZ ) ) )
+				int blockId = world.getBlockId( coords.posX, coords.posY, coords.posZ );
+				int blockMeta = world.getBlockMetadata( coords.posX, coords.posY, coords.posZ );
+				if( isFillerBlock( blockId ) )
 				{
-					world.destroyBlock( coords.posX, coords.posY, coords.posZ, true );
+					world.destroyBlock( coords.posX, coords.posY, coords.posZ, false );
+					Block.blocksList[blockId].harvestBlock( player.worldObj, player, coords.posX, coords.posY, coords.posZ, blockMeta );
 				}
 			}
 		}
