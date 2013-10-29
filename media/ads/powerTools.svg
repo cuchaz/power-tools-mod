@@ -16,9 +16,9 @@
    version="1.1"
    inkscape:version="0.48.4 r9939"
    sodipodi:docname="powerTools.svg"
-   inkscape:export-filename="/home/jeff/minecraft/Power Tools/media/ads/powerTools.png"
-   inkscape:export-xdpi="56.20063"
-   inkscape:export-ydpi="56.20063">
+   inkscape:export-filename="/home/jeff/minecraft/Power Tools/media/ads/powerTools.big.png"
+   inkscape:export-xdpi="112.44275"
+   inkscape:export-ydpi="112.44275">
   <defs
      id="defs4">
     <linearGradient
@@ -283,7 +283,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.1344201"
-     inkscape:cx="536.45459"
+     inkscape:cx="538.21761"
      inkscape:cy="233.68882"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -339,7 +339,7 @@
        sodipodi:cy="251.29907"
        sodipodi:rx="45.824516"
        sodipodi:ry="45.824516"
-       d="m 192.46297,251.29907 a 45.824516,45.824516 0 1 1 -91.64903,0 45.824516,45.824516 0 1 1 91.64903,0 z"
+       d="m 192.46297,251.29907 c 0,25.30818 -20.51633,45.82452 -45.82451,45.82452 -25.30818,0 -45.82452,-20.51634 -45.82452,-45.82452 0,-25.30818 20.51634,-45.82451 45.82452,-45.82451 25.30818,0 45.82451,20.51633 45.82451,45.82451 z"
        transform="matrix(1.8285715,0,0,1.8285715,44.252751,37.518684)" />
     <path
        sodipodi:type="arc"
@@ -349,7 +349,7 @@
        sodipodi:cy="251.29907"
        sodipodi:rx="45.824516"
        sodipodi:ry="45.824516"
-       d="m 192.46297,251.29907 a 45.824516,45.824516 0 1 1 -91.64903,0 45.824516,45.824516 0 1 1 91.64903,0 z"
+       d="m 192.46297,251.29907 c 0,25.30818 -20.51633,45.82452 -45.82451,45.82452 -25.30818,0 -45.82452,-20.51634 -45.82452,-45.82452 0,-25.30818 20.51634,-45.82451 45.82452,-45.82451 25.30818,0 45.82451,20.51633 45.82451,45.82451 z"
        transform="matrix(1.8285715,0,0,1.8285715,221.00446,44.065043)" />
     <path
        sodipodi:type="arc"
@@ -359,7 +359,7 @@
        sodipodi:cy="251.29907"
        sodipodi:rx="45.824516"
        sodipodi:ry="45.824516"
-       d="m 192.46297,251.29907 a 45.824516,45.824516 0 1 1 -91.64903,0 45.824516,45.824516 0 1 1 91.64903,0 z"
+       d="m 192.46297,251.29907 c 0,25.30818 -20.51633,45.82452 -45.82451,45.82452 -25.30818,0 -45.82452,-20.51634 -45.82452,-45.82452 0,-25.30818 20.51634,-45.82451 45.82452,-45.82451 25.30818,0 45.82451,20.51633 45.82451,45.82451 z"
        transform="matrix(1.8285715,0,0,1.8285715,379.42636,34.900139)" />
     <path
        sodipodi:type="arc"
@@ -369,7 +369,7 @@
        sodipodi:cy="251.29907"
        sodipodi:rx="45.824516"
        sodipodi:ry="45.824516"
-       d="m 192.46297,251.29907 a 45.824516,45.824516 0 1 1 -91.64903,0 45.824516,45.824516 0 1 1 91.64903,0 z"
+       d="m 192.46297,251.29907 c 0,25.30818 -20.51633,45.82452 -45.82451,45.82452 -25.30818,0 -45.82452,-20.51634 -45.82452,-45.82452 0,-25.30818 20.51634,-45.82451 45.82452,-45.82451 25.30818,0 45.82451,20.51633 45.82451,45.82451 z"
        transform="matrix(1.8285715,0,0,1.8285715,-123.33405,34.900155)" />
     <g
        style="display:inline"
@@ -418,7 +418,7 @@
              width="105.54066"
              id="rect3834-9" /></flowRegion><flowPara
            style="font-size:28px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;fill:none;stroke:#000000;stroke-width:9;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;font-family:Minercraftory;-inkscape-font-specification:Minercraftory Italic"
-           id="flowPara3836-5">v1.2</flowPara></flowRoot>      <flowRoot
+           id="flowPara3836-5">v1.3</flowPara></flowRoot>      <flowRoot
          transform="translate(7.800691,230.53048)"
          style="font-size:28px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#fff349;fill-opacity:1;stroke:none;display:inline;font-family:Minercraftory;-inkscape-font-specification:Minercraftory Bold"
          id="flowRoot3830"
@@ -431,7 +431,7 @@
              width="105.54066"
              id="rect3834" /></flowRegion><flowPara
            style="font-size:28px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#fff349;fill-opacity:1;font-family:Minercraftory;-inkscape-font-specification:Minercraftory Bold Italic"
-           id="flowPara3836">v1.2</flowPara></flowRoot>    </g>
+           id="flowPara3836">v1.3</flowPara></flowRoot>    </g>
     <flowRoot
        xml:space="preserve"
        id="flowRoot3892"
