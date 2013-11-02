@@ -363,6 +363,7 @@ public class TileEntityOilRefinery extends TileEntity
 		return false;
 	}
 	
+	@SuppressWarnings( "deprecation" )
 	private int getAnyUnfullOilStackIndex( )
 	{
 		for( int i=0; i<m_inventory.getSizeInventory(); i++ )
@@ -370,7 +371,7 @@ public class TileEntityOilRefinery extends TileEntity
 			ItemStack itemStack = m_inventory.getStackInSlot( i );
 			if( itemStack != null && itemStack.itemID == PowerTools.ItemOil.itemID )
 			{
-				if( itemStack.stackSize < PowerTools.ItemOil.getItemStackLimit() )
+				if( itemStack.stackSize < PowerTools.ItemOil.getItemStackLimit() ) // I see no reason why this should be deprecated...
 				{
 					return i;
 				}
