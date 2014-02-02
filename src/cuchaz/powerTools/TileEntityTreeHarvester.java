@@ -19,6 +19,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import cuchaz.modsShared.BlockUtils;
+import cuchaz.modsShared.BlockUtils.BlockExplorer;
 import cuchaz.modsShared.BlockUtils.Neighbors;
 import cuchaz.modsShared.DelayTimer;
 
@@ -48,10 +49,10 @@ public class TileEntityTreeHarvester extends TileEntity
 		
 		// grab all connected wood/leaf blocks with the same meta up to a few blocks away in the xz plane
 		final int targetMeta = worldObj.getBlockMetadata( xCoord, yCoord, zCoord ) & 0x3;
-		List<ChunkCoordinates> blocks = BlockUtils.searchForBlocks( xCoord, yCoord, zCoord, 10000, new BlockUtils.BlockValidator( )
+		List<ChunkCoordinates> blocks = BlockUtils.searchForBlocks( xCoord, yCoord, zCoord, 10000, new BlockExplorer( )
 		{
 			@Override
-			public boolean isValid( ChunkCoordinates coords )
+			public boolean shouldExploreBlock( ChunkCoordinates coords )
 			{
 				// is this block wood/leaves?
 				int blockId = worldObj.getBlockId( coords.posX, coords.posY, coords.posZ );
