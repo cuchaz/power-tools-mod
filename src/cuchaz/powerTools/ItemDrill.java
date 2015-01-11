@@ -22,8 +22,7 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
-public abstract class ItemDrill extends ItemOilBasedTool
-{
+public abstract class ItemDrill extends ItemOilBasedTool {
 	// settings
 	private static final int MaxUses = 400;
 	private static final float DamageVsEntity = 1.0f; // should be 0-5
@@ -34,127 +33,110 @@ public abstract class ItemDrill extends ItemOilBasedTool
 	private static final float OreEfficiency = 1.0f;
 	private static final int OilPowerLength = 35;
 	
-	private static final int[] FillerBlocks = new int[]
-  	{
-  		Block.cobblestone.blockID,
-  		Block.stoneDoubleSlab.blockID,
-  		Block.stoneSingleSlab.blockID,
-  		Block.stone.blockID,
-  		Block.sandStone.blockID,
-  		Block.cobblestoneMossy.blockID,
-  		Block.ice.blockID,
-  		Block.netherrack.blockID,
-  		Block.grass.blockID,
-  		Block.dirt.blockID,
-  		Block.sand.blockID,
-  		Block.gravel.blockID,
-  		Block.snow.blockID,
-  		Block.blockSnow.blockID,
-  		Block.blockClay.blockID,
-  		Block.tilledField.blockID,
-  		Block.slowSand.blockID,
-  		Block.mycelium.blockID
-  	};
-  	
-  	private static final int[] OreBlocks = new int[]
-  	{
-  		Block.oreIron.blockID,
-  		Block.oreCoal.blockID,
-  		Block.oreGold.blockID,
-  		Block.oreDiamond.blockID,
-  		Block.oreLapis.blockID,
-  		Block.oreRedstone.blockID,
-  		Block.oreRedstoneGlowing.blockID,
-  		Block.blockIron.blockID,
-  		Block.blockGold.blockID,
-  		Block.blockDiamond.blockID,
-  		Block.blockLapis.blockID
-  	};
-  	
-	static
-	{
+	private static final int[] FillerBlocks = new int[] {
+		Block.cobblestone.blockID,
+		Block.stoneDoubleSlab.blockID,
+		Block.stoneSingleSlab.blockID,
+		Block.stone.blockID,
+		Block.sandStone.blockID,
+		Block.cobblestoneMossy.blockID,Block.ice.blockID,
+		Block.netherrack.blockID,
+		Block.grass.blockID,
+		Block.dirt.blockID,
+		Block.sand.blockID,
+		Block.gravel.blockID,
+		Block.snow.blockID,
+		Block.blockSnow.blockID,
+		Block.blockClay.blockID,
+		Block.tilledField.blockID,
+		Block.slowSand.blockID,
+		Block.mycelium.blockID
+	};
+	
+	private static final int[] OreBlocks = new int[] {
+		Block.oreIron.blockID,
+		Block.oreCoal.blockID,
+		Block.oreGold.blockID,
+		Block.oreDiamond.blockID,
+		Block.oreLapis.blockID,
+		Block.oreRedstone.blockID,
+		Block.oreRedstoneGlowing.blockID,
+		Block.blockIron.blockID,
+		Block.blockGold.blockID,
+		Block.blockDiamond.blockID,
+		Block.blockLapis.blockID
+	};
+	
+	static {
 		// sort the blocklists so we can use binary search
-		Arrays.sort( FillerBlocks );
-		Arrays.sort( OreBlocks );
+		Arrays.sort(FillerBlocks);
+		Arrays.sort(OreBlocks);
 	}
 	
-	public ItemDrill( int itemId )
-	{
-		super( itemId, OilPowerLength );
+	public ItemDrill(int itemId) {
+		super(itemId, OilPowerLength);
 		
-		setMaxDamage( MaxUses );
+		setMaxDamage(MaxUses);
 	}
 	
-	protected boolean isFillerBlock( Block block )
-	{
-		return isFillerBlock( block.blockID );
+	protected boolean isFillerBlock(Block block) {
+		return isFillerBlock(block.blockID);
 	}
 	
-	protected boolean isFillerBlock( int blockId )
-	{
-		return Arrays.binarySearch( FillerBlocks, blockId ) >= 0;
+	protected boolean isFillerBlock(int blockId) {
+		return Arrays.binarySearch(FillerBlocks, blockId) >= 0;
 	}
 	
-	protected boolean isOreBlock( Block block )
-	{
-		return isOreBlock( block.blockID );
+	protected boolean isOreBlock(Block block) {
+		return isOreBlock(block.blockID);
 	}
 	
-	protected boolean isOreBlock( int blockId )
-	{
-		return Arrays.binarySearch( OreBlocks, blockId ) >= 0;
+	protected boolean isOreBlock(int blockId) {
+		return Arrays.binarySearch(OreBlocks, blockId) >= 0;
 	}
 	
 	@Override
-	public boolean canHarvestBlock( Block block )
-	{
-		return isFillerBlock( block ) || isOreBlock( block );
+	public boolean canHarvestBlock(Block block) {
+		return isFillerBlock(block) || isOreBlock(block);
 	}
 	
 	@Override
-	public boolean hitEntity( ItemStack itemStack, EntityLivingBase entityTarget, EntityLivingBase entityUser )
-	{
+	public boolean hitEntity(ItemStack itemStack, EntityLivingBase entityTarget, EntityLivingBase entityUser) {
 		// decrease item durability
-		itemStack.damageItem( DurabilityLostToEntity, entityUser );
+		itemStack.damageItem(DurabilityLostToEntity, entityUser);
 		
 		return true;
 	}
 	
 	@Override
-	public boolean onBlockStartBreak( ItemStack itemStack, int x, int y, int z, EntityPlayer player )
-	{
+	public boolean onBlockStartBreak(ItemStack itemStack, int x, int y, int z, EntityPlayer player) {
 		final boolean AllowHarvest = false;
-		//final boolean PreventHarvest = true;
+		// final boolean PreventHarvest = true;
 		
 		// find out which side we're hitting
 		World world = player.worldObj;
-		Block block = Block.blocksList[world.getBlockId( x, y, z )];
+		Block block = Block.blocksList[world.getBlockId(x, y, z)];
 		final boolean HitLiquids = false;
-		MovingObjectPosition pos = getMovingObjectPositionFromPlayer( world, player, HitLiquids );
-		if( pos == null || pos.blockX != x || pos.blockY != y || pos.blockZ != z )
-		{
+		MovingObjectPosition pos = getMovingObjectPositionFromPlayer(world, player, HitLiquids);
+		if (pos == null || pos.blockX != x || pos.blockY != y || pos.blockZ != z) {
 			return AllowHarvest;
 		}
 		int side = pos.sideHit;
 		
 		// if the block has hardness
-		if( block.getBlockHardness( world, x, y, z ) != 0.0f )
-		{
+		if (block.getBlockHardness(world, x, y, z) != 0.0f) {
 			// decrease item durability
-			itemStack.damageItem( DurabilityLostToBlock, player );
+			itemStack.damageItem(DurabilityLostToBlock, player);
 		}
 		
 		// dig the extra blocks
-		if( isFillerBlock( block ) )
-		{
-			for( ChunkCoordinates coords : getOtherBlocksToDig( world, x, y, z, side, player ) )
-			{
-				int blockId = world.getBlockId( coords.posX, coords.posY, coords.posZ );
-				int blockMeta = world.getBlockMetadata( coords.posX, coords.posY, coords.posZ );
-				if( isFillerBlock( blockId ) )
-				{
-					world.destroyBlock( coords.posX, coords.posY, coords.posZ, false );
-					Block.blocksList[blockId].harvestBlock( player.worldObj, player, coords.posX, coords.posY, coords.posZ, blockMeta );
+		if (isFillerBlock(block)) {
+			for (ChunkCoordinates coords : getOtherBlocksToDig(world, x, y, z, side, player)) {
+				int blockId = world.getBlockId(coords.posX, coords.posY, coords.posZ);
+				int blockMeta = world.getBlockMetadata(coords.posX, coords.posY, coords.posZ);
+				if (isFillerBlock(blockId)) {
+					world.destroyBlock(coords.posX, coords.posY, coords.posZ, false);
+					Block.blocksList[blockId].harvestBlock(player.worldObj, player, coords.posX, coords.posY, coords.posZ, blockMeta);
 				}
 			}
 		}
@@ -162,32 +144,26 @@ public abstract class ItemDrill extends ItemOilBasedTool
 		return AllowHarvest;
 	}
 	
-	protected abstract List<ChunkCoordinates> getOtherBlocksToDig( World world, int x, int y, int z, int side, EntityPlayer player );
+	protected abstract List<ChunkCoordinates> getOtherBlocksToDig(World world, int x, int y, int z, int side, EntityPlayer player);
 	
 	@Override
-	public float getDamageVsEntity( Entity entityTarget, ItemStack itemStack )
-	{
+	public float getDamageVsEntity(Entity entityTarget, ItemStack itemStack) {
 		return DamageVsEntity;
 	}
 	
 	@Override
-	public int getItemEnchantability( )
-	{
+	public int getItemEnchantability() {
 		return Enchantability;
 	}
 	
 	@Override
-	public float getStrVsBlock( ItemStack stack, Block block, int meta )
-	{
-		if( isFillerBlock( block ) )
-		{
+	public float getStrVsBlock(ItemStack stack, Block block, int meta) {
+		if (isFillerBlock(block)) {
 			return FillerEfficiency;
-		}
-		else if( isOreBlock( block ) )
-		{
+		} else if (isOreBlock(block)) {
 			return OreEfficiency;
 		}
 		
-		return super.getStrVsBlock( stack, block, meta );
+		return super.getStrVsBlock(stack, block, meta);
 	}
 }

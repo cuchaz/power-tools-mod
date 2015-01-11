@@ -28,87 +28,84 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import cuchaz.modsShared.BlockSide;
 
-public class BlockOilRefinery extends BlockContainer
-{
-	@SideOnly( Side.CLIENT )
+public class BlockOilRefinery extends BlockContainer {
+	@SideOnly(Side.CLIENT)
 	private Icon[] m_iconFront;
-	@SideOnly( Side.CLIENT )
+	@SideOnly(Side.CLIENT)
 	private Icon[] m_iconSide;
-	@SideOnly( Side.CLIENT )
+	@SideOnly(Side.CLIENT)
 	private Icon m_iconTop;
 	
-	protected BlockOilRefinery( int blockId )
-	{
-		super( blockId, Material.iron );
+	protected BlockOilRefinery(int blockId) {
+		super(blockId, Material.iron);
 		
-		setHardness( 5.0F );
-		setResistance( 10.0F );
-		setStepSound( soundMetalFootstep );
-		setUnlocalizedName( "blockOilRefinery" );
-		setCreativeTab( CreativeTabs.tabDecorations );
+		setHardness(5.0F);
+		setResistance(10.0F);
+		setStepSound(soundMetalFootstep);
+		setUnlocalizedName("blockOilRefinery");
+		setCreativeTab(CreativeTabs.tabDecorations);
 	}
 	
 	@Override
-	public TileEntity createNewTileEntity( World world )
-	{
+	public TileEntity createNewTileEntity(World world) {
 		return new TileEntityOilRefinery();
 	}
 	
 	@Override
-	@SideOnly( Side.CLIENT )
-	public void registerIcons( IconRegister iconRegister )
-	{
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister iconRegister) {
 		m_iconFront = new Icon[] { null, null, null, null };
 		m_iconSide = new Icon[] { null, null };
 		
 		// UNDONE: can change textures here based on state
-		blockIcon = iconRegister.registerIcon( "powertools:oilRefineryBack" );
-		m_iconFront[0] = iconRegister.registerIcon( "powertools:oilRefineryFront1" );
-		m_iconFront[1] = iconRegister.registerIcon( "powertools:oilRefineryFront2" );
-		m_iconFront[2] = iconRegister.registerIcon( "powertools:oilRefineryFront3" );
-		m_iconFront[3] = iconRegister.registerIcon( "powertools:oilRefineryFront4" );
-		m_iconSide[0] = iconRegister.registerIcon( "powertools:oilRefinerySide1" );
-		m_iconSide[1] = iconRegister.registerIcon( "powertools:oilRefinerySide2" );
-		m_iconTop = iconRegister.registerIcon( "powertools:oilRefineryTop" );
+		blockIcon = iconRegister.registerIcon("powertools:oilRefineryBack");
+		m_iconFront[0] = iconRegister.registerIcon("powertools:oilRefineryFront1");
+		m_iconFront[1] = iconRegister.registerIcon("powertools:oilRefineryFront2");
+		m_iconFront[2] = iconRegister.registerIcon("powertools:oilRefineryFront3");
+		m_iconFront[3] = iconRegister.registerIcon("powertools:oilRefineryFront4");
+		m_iconSide[0] = iconRegister.registerIcon("powertools:oilRefinerySide1");
+		m_iconSide[1] = iconRegister.registerIcon("powertools:oilRefinerySide2");
+		m_iconTop = iconRegister.registerIcon("powertools:oilRefineryTop");
 	}
 	
 	@Override
-	@SideOnly( Side.CLIENT )
-	public Icon getIcon( int side, int meta )
-	{
-		return getIcon( side, meta, 0, 0 ); 
+	@SideOnly(Side.CLIENT)
+	public Icon getIcon(int side, int meta) {
+		return getIcon(side, meta, 0, 0);
 	}
 	
 	@Override
-	@SideOnly( Side.CLIENT )
-	public Icon getBlockTexture( IBlockAccess world, int x, int y, int z, int side )
-	{
-		TileEntityOilRefinery tileEntity = (TileEntityOilRefinery)world.getBlockTileEntity( x, y, z );
-		return getIcon( side, tileEntity.getBlockMetadata(), tileEntity.getWheelFrame(), tileEntity.getOilFrame() );
+	@SideOnly(Side.CLIENT)
+	public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int side) {
+		TileEntityOilRefinery tileEntity = (TileEntityOilRefinery)world.getBlockTileEntity(x, y, z);
+		return getIcon(side, tileEntity.getBlockMetadata(), tileEntity.getWheelFrame(), tileEntity.getOilFrame());
 	}
 	
-	@SideOnly( Side.CLIENT )
-	@SuppressWarnings( "incomplete-switch" )
-	private Icon getIcon( int side, int rotation, int wheelFrame, int oilFrame )
-	{
+	@SideOnly(Side.CLIENT)
+	@SuppressWarnings("incomplete-switch")
+	private Icon getIcon(int side, int rotation, int wheelFrame, int oilFrame) {
 		// top and bottom are easy
-		BlockSide targetSide = BlockSide.getById( side );
-		switch( targetSide )
-		{
-			case Top: return m_iconTop;
-			case Bottom: return blockIcon;
+		BlockSide targetSide = BlockSide.getById(side);
+		switch (targetSide) {
+			case Top:
+				return m_iconTop;
+			case Bottom:
+				return blockIcon;
 		}
 		
 		// rotate the sides
-		targetSide = targetSide.rotateXZCcw( rotation );
+		targetSide = targetSide.rotateXZCcw(rotation);
 		
 		// now do the sides
-		switch( targetSide )
-		{
-			case North: return blockIcon;
-			case East: return m_iconSide[wheelFrame];
-			case South: return m_iconFront[oilFrame];
-			case West: return m_iconSide[wheelFrame];
+		switch (targetSide) {
+			case North:
+				return blockIcon;
+			case East:
+				return m_iconSide[wheelFrame];
+			case South:
+				return m_iconFront[oilFrame];
+			case West:
+				return m_iconSide[wheelFrame];
 		}
 		
 		// if all else fails
@@ -116,25 +113,22 @@ public class BlockOilRefinery extends BlockContainer
 	}
 	
 	@Override
-	public void onBlockPlacedBy( World world, int x, int y, int z, EntityLivingBase entityUser, ItemStack itemStack )
-    {
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityUser, ItemStack itemStack) {
 		// save the block rotation to the metadata
-		world.setBlockMetadataWithNotify( x, y, z, BlockSide.getByYaw( entityUser.rotationYaw ).getXZOffset(), 3 );
-    }
+		world.setBlockMetadataWithNotify(x, y, z, BlockSide.getByYaw(entityUser.rotationYaw).getXZOffset(), 3);
+	}
 	
 	@Override
-	public boolean onBlockActivated( World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9 )
-	{
-		// ignore for clients (taken from BlockFurnace... but this seems backwards?)
-		if( world.isRemote )
-		{
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
+		// ignore for clients (taken from BlockFurnace... but this seems
+		// backwards?)
+		if (world.isRemote) {
 			return true;
 		}
 		
-		TileEntityOilRefinery tileEntity = (TileEntityOilRefinery)world.getBlockTileEntity( x, y, z );
-		if( tileEntity != null )
-		{
-			player.displayGUIChest( tileEntity.getInventory() );
+		TileEntityOilRefinery tileEntity = (TileEntityOilRefinery)world.getBlockTileEntity(x, y, z);
+		if (tileEntity != null) {
+			player.displayGUIChest(tileEntity.getInventory());
 			tileEntity.onBlockActivated();
 		}
 		
@@ -142,18 +136,15 @@ public class BlockOilRefinery extends BlockContainer
 	}
 	
 	@Override
-	public void breakBlock( World world, int x, int y, int z, int side, int meta )
-	{
+	public void breakBlock(World world, int x, int y, int z, int side, int meta) {
 		Random rand = new Random();
 		
 		// eject the items from the refinery
-		TileEntityOilRefinery tileEntity = (TileEntityOilRefinery)world.getBlockTileEntity( x, y, z );
-		for( int i=0; i<tileEntity.getInventory().getSizeInventory(); i++ )
-		{
+		TileEntityOilRefinery tileEntity = (TileEntityOilRefinery)world.getBlockTileEntity(x, y, z);
+		for (int i = 0; i < tileEntity.getInventory().getSizeInventory(); i++) {
 			// get the item in slot i
-			ItemStack itemStack = tileEntity.getInventory().getStackInSlot( i );
-			if( itemStack == null )
-			{
+			ItemStack itemStack = tileEntity.getInventory().getStackInSlot(i);
+			if (itemStack == null) {
 				continue;
 			}
 			
@@ -170,17 +161,13 @@ public class BlockOilRefinery extends BlockContainer
 			double vz = rand.nextGaussian() * variance;
 			
 			// eject the item into the world
-			EntityItem entityItem = new EntityItem(
-				world,
-				dx + x, dy + y, dz + z,
-				new ItemStack( itemStack.itemID, itemStack.stackSize, itemStack.getItemDamage() )
-			);
+			EntityItem entityItem = new EntityItem(world, dx + x, dy + y, dz + z, new ItemStack(itemStack.itemID, itemStack.stackSize, itemStack.getItemDamage()));
 			entityItem.motionX = vx;
 			entityItem.motionY = vy;
 			entityItem.motionZ = vz;
-			world.spawnEntityInWorld( entityItem );
+			world.spawnEntityInWorld(entityItem);
 		}
 		
-		super.breakBlock( world, x, y, z, side, meta );
+		super.breakBlock(world, x, y, z, side, meta);
 	}
 }

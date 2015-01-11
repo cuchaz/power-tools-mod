@@ -20,8 +20,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemChainsaw extends ItemOilBasedTool
-{
+public class ItemChainsaw extends ItemOilBasedTool {
 	// settings
 	private static final int MaxUses = 400;
 	private static final float DamageVsEntity = 4.0f; // should be 0-5
@@ -34,93 +33,75 @@ public class ItemChainsaw extends ItemOilBasedTool
 	private static final float LeavesEfficiency = 12.0f;
 	private static final int OilPowerLength = 16;
 	
-	public ItemChainsaw( int itemId )
-	{
-		super( itemId, OilPowerLength );
-		setMaxDamage( MaxUses );
-		setUnlocalizedName( "chainsaw" );
+	public ItemChainsaw(int itemId) {
+		super(itemId, OilPowerLength);
+		setMaxDamage(MaxUses);
+		setUnlocalizedName("chainsaw");
 	}
 	
 	@Override
-	@SideOnly( Side.CLIENT )
-	public void registerIcons( IconRegister iconRegister )
-	{
-		itemIcon = iconRegister.registerIcon( "powertools:chainsaw" );
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister iconRegister) {
+		itemIcon = iconRegister.registerIcon("powertools:chainsaw");
 	}
 	
 	@Override
-	public boolean canHarvestBlock( Block block )
-	{
+	public boolean canHarvestBlock(Block block) {
 		return block.blockID == Block.wood.blockID;
 	}
 	
 	@Override
-	public boolean hitEntity( ItemStack itemStack, EntityLivingBase entityTarget, EntityLivingBase entityUser )
-	{
+	public boolean hitEntity(ItemStack itemStack, EntityLivingBase entityTarget, EntityLivingBase entityUser) {
 		// decrease item durability
-		itemStack.damageItem( DurabilityLostToEntity, entityUser );
+		itemStack.damageItem(DurabilityLostToEntity, entityUser);
 		
 		return true;
 	}
 	
 	@Override
-	public boolean onBlockStartBreak( ItemStack itemStack, int x, int y, int z, EntityPlayer player )
-	{
+	public boolean onBlockStartBreak(ItemStack itemStack, int x, int y, int z, EntityPlayer player) {
 		World world = player.worldObj;
-		Block block = Block.blocksList[world.getBlockId( x, y, z )];
+		Block block = Block.blocksList[world.getBlockId(x, y, z)];
 		
 		// if the block has hardness
-		if( block.getBlockHardness( world, x, y, z ) != 0.0f )
-		{
+		if (block.getBlockHardness(world, x, y, z) != 0.0f) {
 			// decrease item durability
 			int damage = 0;
-			if( block.blockID == Block.wood.blockID )
-			{
+			if (block.blockID == Block.wood.blockID) {
 				damage = DurabilityLostToBlockWood;
 				
 				// on the server, spawn a tree harvester
-				if( !world.isRemote )
-				{
-					TileEntityTreeHarvester.spawn( world, x, y, z );
+				if (!world.isRemote) {
+					TileEntityTreeHarvester.spawn(world, x, y, z);
 				}
-			}
-			else if( block.blockID == Block.leaves.blockID )
-			{
+			} else if (block.blockID == Block.leaves.blockID) {
 				damage = DurabilityLostToBlockLeaves;
-			}
-			else
-			{
+			} else {
 				damage = DurabilityLostToBlockOther;
 			}
-			itemStack.damageItem( damage, player );
+			itemStack.damageItem(damage, player);
 		}
 		
-		return super.onBlockStartBreak( itemStack, x, y, z, player );
+		return super.onBlockStartBreak(itemStack, x, y, z, player);
 	}
 	
 	@Override
-	public float getDamageVsEntity( Entity entityTarget, ItemStack itemStack )
-	{
+	public float getDamageVsEntity(Entity entityTarget, ItemStack itemStack) {
 		return DamageVsEntity;
 	}
 	
 	@Override
-	public int getItemEnchantability( )
-	{
+	public int getItemEnchantability() {
 		return Enchantability;
 	}
 	
 	@Override
-	public float getStrVsBlock( ItemStack stack, Block block, int meta )
-	{
-		if( block == Block.wood )
-		{
+	public float getStrVsBlock(ItemStack stack, Block block, int meta) {
+		if (block == Block.wood) {
 			return WoodEfficiency;
-		}
-		else if( block == Block.leaves )
-		{
+		} else if (block == Block.leaves) {
 			return LeavesEfficiency;
 		}
-		return super.getStrVsBlock( stack, block, meta );
+		return super.getStrVsBlock(stack, block, meta);
 	}
 }
