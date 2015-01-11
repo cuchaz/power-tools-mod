@@ -14,23 +14,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet132TileEntityData;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
-import cuchaz.modsShared.DelayTimer;
+import cuchaz.modsShared.perf.DelayTimer;
 
 public class TileEntityOilRefinery extends TileEntity {
+	
 	private static final String InventoryName = "Oil Refinery";
-	private static final int InventorySize = 9; // needs to be a multiple of 9
-												// or the GUI won't work
+	private static final int InventorySize = 9; // needs to be a multiple of 9 or the GUI won't work
 	private static final int ProcessingTime = 32;
 	private static final int OilPerCoal = 2;
 	
@@ -65,9 +66,9 @@ public class TileEntityOilRefinery extends TileEntity {
 		super.readFromNBT(nbt);
 		
 		// load the items
-		NBTTagList tagList = nbt.getTagList("items");
+		NBTTagList tagList = nbt.getTagList("items", 10);
 		for (int i = 0; i < tagList.tagCount(); i++) {
-			NBTTagCompound itemNbt = (NBTTagCompound)tagList.tagAt(i);
+			NBTTagCompound itemNbt = (NBTTagCompound)tagList.getCompoundTagAt(i);
 			byte slot = itemNbt.getByte("slot");
 			if (slot >= 0 && slot < m_inventory.getSizeInventory()) {
 				m_inventory.setInventorySlotContents(slot, ItemStack.loadItemStackFromNBT(itemNbt));
@@ -111,16 +112,16 @@ public class TileEntityOilRefinery extends TileEntity {
 	public Packet getDescriptionPacket() {
 		NBTTagCompound nbt = new NBTTagCompound();
 		writeToNBT(nbt);
-		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, nbt);
+		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, nbt);
 	}
 	
 	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
-		readFromNBT(packet.data);
+	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
+		readFromNBT(packet.func_148857_g());
 		
 		// re-render if we're on the client
 		if (worldObj.isRemote) {
-			worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
 	}
 	
@@ -144,17 +145,16 @@ public class TileEntityOilRefinery extends TileEntity {
 			boolean wheelsUpdated = updateWheels(isPowered);
 			boolean oilUpdated = updateCoalProcessing(isPowered);
 			
-			// on the client...
 			if (worldObj.isRemote) {
+				// on the client...
 				if (wheelsUpdated) {
 					// re-render the block
-					worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+					worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 				}
-			}
-			// on the server...
-			else {
+			} else {
+				// on the server...
 				if (oilUpdated) {
-					// update the client
+					// send block info to the client
 					worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 				}
 			}
@@ -235,16 +235,15 @@ public class TileEntityOilRefinery extends TileEntity {
 		
 		// does either side have a flowing water block?
 		for (ChunkCoordinates coords : blocks) {
-			int blockId = worldObj.getBlockId(coords.posX, coords.posY, coords.posZ);
+			Block block = worldObj.getBlock(coords.posX, coords.posY, coords.posZ);
 			
-			if (blockId == Block.waterStill.blockID) {
+			if (block == Blocks.water) {
 				// is the block flowing? (meta 1-8 indicates flowing water)
 				if (worldObj.getBlockMetadata(coords.posX, coords.posY, coords.posZ) > 0) {
 					return true;
 				}
-			} else if (blockId == Block.waterMoving.blockID) {
-				// moving water is really falling water, or water that is
-				// changing depths
+			} else if (block == Blocks.flowing_water) {
+				// moving water is really falling water, or water that is changing depths
 				return true;
 			}
 		}
@@ -278,7 +277,7 @@ public class TileEntityOilRefinery extends TileEntity {
 	private int getAnyCoalStackIndex() {
 		for (int i = 0; i < m_inventory.getSizeInventory(); i++) {
 			ItemStack itemStack = m_inventory.getStackInSlot(i);
-			if (itemStack != null && itemStack.itemID == Item.coal.itemID) {
+			if (itemStack != null && itemStack.getItem() == Items.coal) {
 				return i;
 			}
 		}
@@ -316,7 +315,7 @@ public class TileEntityOilRefinery extends TileEntity {
 	private int getAnyUnfullOilStackIndex() {
 		for (int i = 0; i < m_inventory.getSizeInventory(); i++) {
 			ItemStack itemStack = m_inventory.getStackInSlot(i);
-			if (itemStack != null && itemStack.itemID == PowerTools.ItemOil.itemID) {
+			if (itemStack != null && itemStack.getItem() == PowerTools.ItemOil) {
 				// I see no reason why this should be deprecated...
 				if (itemStack.stackSize < PowerTools.ItemOil.getItemStackLimit()) {
 					return i;

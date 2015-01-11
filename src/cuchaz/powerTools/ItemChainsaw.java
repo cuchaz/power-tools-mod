@@ -11,16 +11,21 @@
 package cuchaz.powerTools;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import com.google.common.collect.Multimap;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemChainsaw extends ItemOilBasedTool {
+	
 	// settings
 	private static final int MaxUses = 400;
 	private static final float DamageVsEntity = 4.0f; // should be 0-5
@@ -33,25 +38,26 @@ public class ItemChainsaw extends ItemOilBasedTool {
 	private static final float LeavesEfficiency = 12.0f;
 	private static final int OilPowerLength = 16;
 	
-	public ItemChainsaw(int itemId) {
-		super(itemId, OilPowerLength);
+	public ItemChainsaw() {
+		super(OilPowerLength);
 		setMaxDamage(MaxUses);
 		setUnlocalizedName("chainsaw");
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister) {
+	public void registerIcons(IIconRegister iconRegister) {
 		itemIcon = iconRegister.registerIcon("powertools:chainsaw");
 	}
 	
 	@Override
-	public boolean canHarvestBlock(Block block) {
-		return block.blockID == Block.wood.blockID;
+	public boolean canHarvestBlock(Block block, ItemStack stack) {
+		return TileEntityTreeHarvester.isWoodBlock(block);
 	}
 	
 	@Override
 	public boolean hitEntity(ItemStack itemStack, EntityLivingBase entityTarget, EntityLivingBase entityUser) {
+		
 		// decrease item durability
 		itemStack.damageItem(DurabilityLostToEntity, entityUser);
 		
@@ -61,20 +67,21 @@ public class ItemChainsaw extends ItemOilBasedTool {
 	@Override
 	public boolean onBlockStartBreak(ItemStack itemStack, int x, int y, int z, EntityPlayer player) {
 		World world = player.worldObj;
-		Block block = Block.blocksList[world.getBlockId(x, y, z)];
+		Block block = world.getBlock(x, y, z);
 		
 		// if the block has hardness
 		if (block.getBlockHardness(world, x, y, z) != 0.0f) {
+			
 			// decrease item durability
 			int damage = 0;
-			if (block.blockID == Block.wood.blockID) {
+			if (TileEntityTreeHarvester.isWoodBlock(block)) {
 				damage = DurabilityLostToBlockWood;
 				
 				// on the server, spawn a tree harvester
 				if (!world.isRemote) {
 					TileEntityTreeHarvester.spawn(world, x, y, z);
 				}
-			} else if (block.blockID == Block.leaves.blockID) {
+			} else if (TileEntityTreeHarvester.isLeavesBlock(block)) {
 				damage = DurabilityLostToBlockLeaves;
 			} else {
 				damage = DurabilityLostToBlockOther;
@@ -85,23 +92,28 @@ public class ItemChainsaw extends ItemOilBasedTool {
 		return super.onBlockStartBreak(itemStack, x, y, z, player);
 	}
 	
-	@Override
-	public float getDamageVsEntity(Entity entityTarget, ItemStack itemStack) {
-		return DamageVsEntity;
-	}
+	@SuppressWarnings({ "rawtypes", "deprecation", "unchecked" })
+	public Multimap getItemAttributeModifiers() {
+        Multimap multimap = super.getItemAttributeModifiers();
+        multimap.put(
+        	SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
+        	new AttributeModifier(field_111210_e, "Tool modifier", (double)DamageVsEntity, 0)
+        );
+        return multimap;
+    }
 	
 	@Override
 	public int getItemEnchantability() {
 		return Enchantability;
 	}
 	
-	@Override
-	public float getStrVsBlock(ItemStack stack, Block block, int meta) {
-		if (block == Block.wood) {
+	@Override // getStrVsBlock
+	public float func_150893_a(ItemStack stack, Block block) {
+		if (TileEntityTreeHarvester.isWoodBlock(block)) {
 			return WoodEfficiency;
-		} else if (block == Block.leaves) {
+		} else if (TileEntityTreeHarvester.isLeavesBlock(block)) {
 			return LeavesEfficiency;
 		}
-		return super.getStrVsBlock(stack, block, meta);
+		return super.func_150893_a(stack, block);
 	}
 }

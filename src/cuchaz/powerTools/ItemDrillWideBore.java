@@ -13,28 +13,29 @@ package cuchaz.powerTools;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import cuchaz.modsShared.BlockSide;
+import cuchaz.modsShared.blocks.BlockSide;
 
 public class ItemDrillWideBore extends ItemDrill {
-	public ItemDrillWideBore(int itemId) {
-		super(itemId);
+	
+	public ItemDrillWideBore() {
 		setUnlocalizedName("drillWideBore");
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister) {
+	public void registerIcons(IIconRegister iconRegister) {
 		itemIcon = iconRegister.registerIcon("powertools:drillWideBore");
 	}
 	
 	@Override
 	public List<ChunkCoordinates> getOtherBlocksToDig(World world, int x, int y, int z, int side, EntityPlayer player) {
+		
 		// make the 8-block pattern (like the 9-block pattern, but skip 0,0)
 		int[] dim1 = { -1, -1, -1, 0, /* 0, */ 0, 1, 1, 1 };
 		int[] dim2 = { -1, 0, 1, -1, /* 0, */ 1, -1, 0, 1 };

@@ -19,27 +19,26 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.oredict.OreDictionary;
+
+import com.google.common.eventbus.Subscribe;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import cuchaz.modsShared.DelayTimer;
+import cuchaz.modsShared.perf.DelayTimer;
 
 public class ItemOilBasedTool extends Item {
+	
 	// settings
 	private static final int MaxStackSize = 1;
 	private static final int MaxItemUseDuration = 72000;
 	
-	private static class State implements ToolState<State> {
+	private static class State {
 		public int powerCountdown;
 		
 		public State() {
 			powerCountdown = 0;
-		}
-		
-		public State clone() throws CloneNotSupportedException {
-			return (State)super.clone();
 		}
 	}
 	
@@ -48,14 +47,13 @@ public class ItemOilBasedTool extends Item {
 	private ToolStates<State> m_states;
 	private DelayTimer m_delayTimer;
 	
-	public ItemOilBasedTool(int itemId, int oilPowerLength) {
-		super(itemId);
+	public ItemOilBasedTool(int oilPowerLength) {
 		
 		maxStackSize = MaxStackSize;
 		setCreativeTab(CreativeTabs.tabTools);
 		
 		m_oilPowerLength = oilPowerLength;
-		m_states = new ToolStates<State>(this, new State());
+		m_states = new ToolStates<State>(this);
 		m_delayTimer = new DelayTimer(10);
 	}
 	
@@ -95,9 +93,10 @@ public class ItemOilBasedTool extends Item {
 		}
 	}
 	
-	@ForgeSubscribe
+	@Subscribe
 	public void onBlockHardnessEvent(PlayerEvent.BreakSpeed event) {
-		// get the player if possible
+		
+		// get the player
 		EntityPlayer player = event.entityPlayer;
 		if (player == null) {
 			return;
@@ -105,7 +104,7 @@ public class ItemOilBasedTool extends Item {
 		
 		// is the player even wielding this tool?
 		ItemStack itemStack = player.getHeldItem();
-		if (itemStack == null || itemStack.getItem().itemID != itemID) {
+		if (itemStack == null || itemStack.getItem() != this) {
 			return;
 		}
 		
@@ -127,18 +126,27 @@ public class ItemOilBasedTool extends Item {
 	}
 	
 	private void updateOilConsumption(EntityPlayer player) {
-		State state = m_states.getState(player);
+		State state = getState(player);
 		
 		// consume power
 		state.powerCountdown = Math.max(state.powerCountdown - 1, 0);
 	}
 	
+	private State getState(EntityPlayer player) {
+		State state = m_states.get(player);
+		if (state == null) {
+			state = new State();
+			m_states.set(player, state);
+		}
+		return state;
+	}
+	
 	private boolean isPowered(EntityPlayer player) {
-		return m_states.getState(player).powerCountdown > 0;
+		return getState(player).powerCountdown > 0;
 	}
 	
 	private boolean powerUp(EntityPlayer player) {
-		State state = m_states.getState(player);
+		State state = getState(player);
 		
 		// if we're already powered, then we're already powered
 		if (state.powerCountdown > 0) {
@@ -184,7 +192,7 @@ public class ItemOilBasedTool extends Item {
 	
 	private boolean itemStackInList(List<ItemStack> stacks, ItemStack stack) {
 		for (ItemStack s : stacks) {
-			if (s.getItem().itemID == stack.getItem().itemID) {
+			if (s.getItem() == stack.getItem()) {
 				return true;
 			}
 		}

@@ -10,74 +10,59 @@
  ******************************************************************************/
 package cuchaz.powerTools;
 
-import java.util.TreeMap;
+import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 
-public class ToolStates<T extends ToolState<T>> {
-	// NOTE: can't id by ItemStack instance. They change on the client sporadically
-	// also, beware! Client and Server run in the same JVM in SP mode!
+import com.google.common.collect.Maps;
+
+import cuchaz.modsShared.math.HashCalculator;
+
+public class ToolStates<T> {
 	
-	private static class Key implements Comparable<Key> {
+	private static class StateKey {
 		private int entityId;
 		private int itemId;
 		private boolean isClient;
 		
-		public Key(EntityPlayer player, Item item) {
-			entityId = player.entityId;
-			itemId = item.itemID;
+		public StateKey(EntityPlayer player, Item item) {
+			entityId = player.getEntityId();
+			itemId = Item.getIdFromItem(item);
 			isClient = player.worldObj.isRemote;
 		}
 		
 		@Override
-		public int compareTo(Key other) {
-			int result = entityId - other.entityId;
-			if (result != 0) {
-				return result;
-			}
-			result = itemId - other.itemId;
-			if (result != 0) {
-				return result;
-			}
-			return Boolean.valueOf(isClient).compareTo(other.isClient);
+		public int hashCode() {
+			return HashCalculator.hashIds(entityId, itemId, isClient ? 1 : 0);
 		}
 		
 		@Override
 		public boolean equals(Object other) {
-			if (other instanceof Key) {
-				return equals((Key)other);
+			if (other instanceof StateKey) {
+				return equals((StateKey)other);
 			}
 			return false;
 		}
 		
-		public boolean equals(Key other) {
+		public boolean equals(StateKey other) {
 			return entityId == other.entityId && itemId == other.itemId && isClient == other.isClient;
 		}
 	}
 	
-	private TreeMap<Key,T> m_memory;
+	private Map<StateKey,T> m_states;
 	private Item m_tool;
-	private T m_defaultState;
 	
-	public ToolStates(Item tool, T defaultState) {
+	public ToolStates(Item tool) {
 		m_tool = tool;
-		m_memory = new TreeMap<Key,T>();
-		m_defaultState = defaultState;
+		m_states = Maps.newHashMap();
 	}
 	
-	public T getState(EntityPlayer player) {
-		Key key = new Key(player, m_tool);
-		T state = m_memory.get(key);
-		if (state == null) {
-			try {
-				state = m_defaultState.clone();
-				m_memory.put(key, state);
-			} catch (CloneNotSupportedException ex) {
-				// if this happens, it's a bug and a programmer needs to fix it.
-				throw new Error("Tool state is not clonable!", ex);
-			}
-		}
-		return state;
+	public T get(EntityPlayer player) {
+		return m_states.get(new StateKey(player, m_tool));
+	}
+	
+	public void set(EntityPlayer player, T state) {
+		m_states.put(new StateKey(player, m_tool), state);
 	}
 }

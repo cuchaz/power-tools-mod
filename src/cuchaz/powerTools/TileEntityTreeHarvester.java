@@ -15,28 +15,30 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
-import cuchaz.modsShared.BlockUtils;
-import cuchaz.modsShared.BlockUtils.BlockExplorer;
-import cuchaz.modsShared.BlockUtils.Neighbors;
-import cuchaz.modsShared.DelayTimer;
+import cuchaz.modsShared.blocks.BlockSet;
+import cuchaz.modsShared.blocks.BlockUtils;
+import cuchaz.modsShared.blocks.BlockUtils.BlockExplorer;
+import cuchaz.modsShared.blocks.BlockUtils.Neighbors;
+import cuchaz.modsShared.blocks.Coords;
+import cuchaz.modsShared.perf.DelayTimer;
 
 public class TileEntityTreeHarvester extends TileEntity {
 	private static final int SearchSize = 5;
 	
 	private DelayTimer m_delayTimer;
-	private List<List<ChunkCoordinates>> m_treeBlocks;
+	private List<List<Coords>> m_treeBlocks;
 	
 	public TileEntityTreeHarvester() {
 		m_delayTimer = new DelayTimer(16);
-		m_treeBlocks = new ArrayList<List<ChunkCoordinates>>();
+		m_treeBlocks = new ArrayList<List<Coords>>();
 	}
 	
 	public static void spawn(World world, int x, int y, int z) {
 		TileEntityTreeHarvester treeHarvester = new TileEntityTreeHarvester();
-		world.setBlockTileEntity(x, y, z, treeHarvester);
+		world.setTileEntity(x, y, z, treeHarvester);
 		treeHarvester.findTree();
 	}
 	
@@ -46,23 +48,24 @@ public class TileEntityTreeHarvester extends TileEntity {
 		// grab all connected wood/leaf blocks with the same meta up to a few
 		// blocks away in the xz plane
 		final int targetMeta = worldObj.getBlockMetadata(xCoord, yCoord, zCoord) & 0x3;
-		List<ChunkCoordinates> blocks = BlockUtils.searchForBlocks(xCoord, yCoord, zCoord, 10000, new BlockExplorer() {
+		BlockSet blocks = BlockUtils.searchForBlocks(xCoord, yCoord, zCoord, 10000, new BlockExplorer() {
 			@Override
-			public boolean shouldExploreBlock(ChunkCoordinates coords) {
+			public boolean shouldExploreBlock(Coords coords) {
+				
 				// is this block wood/leaves?
-				int blockId = worldObj.getBlockId(coords.posX, coords.posY, coords.posZ);
-				if (blockId != Block.wood.blockID && blockId != Block.leaves.blockID) {
+				Block block = worldObj.getBlock(coords.x, coords.y, coords.z);
+				if (!isWoodBlock(block) && isLeavesBlock(block)) {
 					return false;
 				}
 				
 				// is this block the same meta?
-				int meta = worldObj.getBlockMetadata(coords.posX, coords.posY, coords.posZ) & 0x3;
+				int meta = worldObj.getBlockMetadata(coords.x, coords.y, coords.z) & 0x3;
 				if (meta != targetMeta) {
 					return false;
 				}
 				
 				// is this block within range?
-				if (coords.posY < yCoord || BlockUtils.getXZManhattanDistance(xCoord, yCoord, zCoord, coords.posX, coords.posY, coords.posZ) > SearchSize) {
+				if (coords.y < yCoord || BlockUtils.getXZManhattanDistance(xCoord, yCoord, zCoord, coords.x, coords.y, coords.z) > SearchSize) {
 					return false;
 				}
 				
@@ -77,16 +80,16 @@ public class TileEntityTreeHarvester extends TileEntity {
 		
 		// get the height
 		int height = 0;
-		for (ChunkCoordinates block : blocks) {
-			height = Math.max(height, block.posY - yCoord + 1);
+		for (Coords block : blocks) {
+			height = Math.max(height, block.y - yCoord + 1);
 		}
 		
 		// make the layers
 		for (int i = 0; i < height; i++) {
-			m_treeBlocks.add(new ArrayList<ChunkCoordinates>());
+			m_treeBlocks.add(new ArrayList<Coords>());
 		}
-		for (ChunkCoordinates block : blocks) {
-			m_treeBlocks.get(block.posY - yCoord).add(block);
+		for (Coords block : blocks) {
+			m_treeBlocks.get(block.y - yCoord).add(block);
 		}
 	}
 	
@@ -97,13 +100,13 @@ public class TileEntityTreeHarvester extends TileEntity {
 		}
 		
 		// move all the current blocks down one level or harvest them
-		Iterator<List<ChunkCoordinates>> iterBlocksThisLayer = m_treeBlocks.iterator();
+		Iterator<List<Coords>> iterBlocksThisLayer = m_treeBlocks.iterator();
 		while (iterBlocksThisLayer.hasNext()) {
-			List<ChunkCoordinates> blocksThisLayer = iterBlocksThisLayer.next();
+			List<Coords> blocksThisLayer = iterBlocksThisLayer.next();
 			
-			Iterator<ChunkCoordinates> iterBlock = blocksThisLayer.iterator();
+			Iterator<Coords> iterBlock = blocksThisLayer.iterator();
 			while (iterBlock.hasNext()) {
-				ChunkCoordinates block = iterBlock.next();
+				Coords block = iterBlock.next();
 				
 				boolean isHarvested = moveBlockDownOrHarvest(block);
 				if (isHarvested) {
@@ -122,29 +125,29 @@ public class TileEntityTreeHarvester extends TileEntity {
 		}
 	}
 	
-	private boolean moveBlockDownOrHarvest(ChunkCoordinates block) {
+	private boolean moveBlockDownOrHarvest(Coords coords) {
 		boolean harvestBlock = false;
 		
 		// is this block at "the bottom" ?
-		if (block.posY <= yCoord) {
+		if (coords.y <= yCoord) {
 			harvestBlock = true;
 		}
 		
 		// is there something solid below this block?
-		if (!worldObj.isAirBlock(block.posX, block.posY - 1, block.posZ)) {
+		if (!worldObj.isAirBlock(coords.x, coords.y - 1, coords.z)) {
 			harvestBlock = true;
 		}
 		
 		if (harvestBlock) {
-			// harvest the block
-			worldObj.destroyBlock(block.posX, block.posY, block.posZ, true);
+			// harvest the block: destroyBlock()
+			worldObj.func_147480_a(coords.x, coords.y, coords.z, true);
 		} else {
 			// move the block down one level
-			int blockId = worldObj.getBlockId(block.posX, block.posY, block.posZ);
-			int meta = worldObj.getBlockMetadata(block.posX, block.posY, block.posZ);
-			worldObj.setBlockToAir(block.posX, block.posY, block.posZ);
-			block.posY--;
-			worldObj.setBlock(block.posX, block.posY, block.posZ, blockId, meta, 3);
+			Block block = worldObj.getBlock(coords.x, coords.y, coords.z);
+			int meta = worldObj.getBlockMetadata(coords.x, coords.y, coords.z);
+			worldObj.setBlockToAir(coords.x, coords.y, coords.z);
+			coords.y--;
+			worldObj.setBlock(coords.x, coords.y, coords.z, block, meta, 3);
 		}
 		
 		return harvestBlock;
@@ -152,6 +155,14 @@ public class TileEntityTreeHarvester extends TileEntity {
 	
 	private void despawn() {
 		invalidate();
-		worldObj.removeBlockTileEntity(xCoord, yCoord, zCoord);
+		worldObj.removeTileEntity(xCoord, yCoord, zCoord);
+	}
+	
+	public static boolean isWoodBlock(Block block) {
+		return block == Blocks.log || block == Blocks.log2;
+	}
+	
+	public static boolean isLeavesBlock(Block block) {
+		return block == Blocks.leaves || block == Blocks.leaves2;
 	}
 }

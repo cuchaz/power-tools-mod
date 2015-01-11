@@ -12,16 +12,21 @@ package cuchaz.powerTools;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import com.google.common.collect.Multimap;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemJackhammer extends ItemOilBasedTool {
+	
 	// settings
 	private static final int MaxUses = 400;
 	private static final float DamageVsEntity = 1.0f; // should be 0-5
@@ -33,25 +38,26 @@ public class ItemJackhammer extends ItemOilBasedTool {
 	
 	private static final Material[] HardMaterials = { Material.glass, Material.ice, Material.rock };
 	
-	public ItemJackhammer(int itemId) {
-		super(itemId, OilPowerLength);
+	public ItemJackhammer() {
+		super(OilPowerLength);
 		setMaxDamage(MaxUses);
 		setUnlocalizedName("jackhammer");
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister) {
+	public void registerIcons(IIconRegister iconRegister) {
 		itemIcon = iconRegister.registerIcon("powertools:jackhammer");
 	}
 	
 	@Override
-	public boolean canHarvestBlock(Block block) {
+	public boolean canHarvestBlock(Block block, ItemStack stack) {
 		return isTargetBlock(block);
 	}
 	
 	@Override
 	public boolean hitEntity(ItemStack itemStack, EntityLivingBase entityTarget, EntityLivingBase entityUser) {
+		
 		// decrease item durability
 		itemStack.damageItem(DurabilityLostToEntity, entityUser);
 		
@@ -60,9 +66,10 @@ public class ItemJackhammer extends ItemOilBasedTool {
 	
 	@Override
 	public boolean onBlockStartBreak(ItemStack itemStack, int x, int y, int z, EntityPlayer player) {
+		
 		// get the block
 		World world = player.worldObj;
-		Block block = Block.blocksList[world.getBlockId(x, y, z)];
+		Block block = world.getBlock(x, y, z);
 		
 		// if the block has hardness
 		if (block.getBlockHardness(world, x, y, z) != 0.0f) {
@@ -73,18 +80,23 @@ public class ItemJackhammer extends ItemOilBasedTool {
 		return super.onBlockStartBreak(itemStack, x, y, z, player);
 	}
 	
-	@Override
-	public float getDamageVsEntity(Entity entityTarget, ItemStack itemStack) {
-		return DamageVsEntity;
-	}
+	@SuppressWarnings({ "rawtypes", "deprecation", "unchecked" })
+	public Multimap getItemAttributeModifiers() {
+        Multimap multimap = super.getItemAttributeModifiers();
+        multimap.put(
+        	SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
+        	new AttributeModifier(field_111210_e, "Tool modifier", (double)DamageVsEntity, 0)
+        );
+        return multimap;
+    }
 	
 	@Override
 	public int getItemEnchantability() {
 		return Enchantability;
 	}
 	
-	@Override
-	public float getStrVsBlock(ItemStack stack, Block block, int meta) {
+	@Override // getStrVsBlock
+	public float func_150893_a(ItemStack stack, Block block) {
 		if (isTargetBlock(block)) {
 			// efficiency
 			// 0-12 (2,4,6,8,12 : wood,stone,iron,diamond,gold)
@@ -100,14 +112,14 @@ public class ItemJackhammer extends ItemOilBasedTool {
 			// want 50x -> 400
 			
 			// the harder the block, the better the jackhammer works
-			return block.blockHardness * 8;
+			return block.getBlockHardness(null, 0, 0, 0) * 8;
 		}
-		return super.getStrVsBlock(stack, block, meta);
+		return super.func_150893_a(stack, block);
 	}
 	
 	private boolean isTargetBlock(Block block) {
 		for (Material material : HardMaterials) {
-			if (block.blockMaterial == material) {
+			if (block.getMaterial() == material) {
 				return true;
 			}
 		}

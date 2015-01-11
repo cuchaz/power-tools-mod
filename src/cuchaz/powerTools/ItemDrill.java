@@ -12,17 +12,24 @@ package cuchaz.powerTools;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
+
 public abstract class ItemDrill extends ItemOilBasedTool {
+	
 	// settings
 	private static final int MaxUses = 400;
 	private static final float DamageVsEntity = 1.0f; // should be 0-5
@@ -33,75 +40,54 @@ public abstract class ItemDrill extends ItemOilBasedTool {
 	private static final float OreEfficiency = 1.0f;
 	private static final int OilPowerLength = 35;
 	
-	private static final int[] FillerBlocks = new int[] {
-		Block.cobblestone.blockID,
-		Block.stoneDoubleSlab.blockID,
-		Block.stoneSingleSlab.blockID,
-		Block.stone.blockID,
-		Block.sandStone.blockID,
-		Block.cobblestoneMossy.blockID,Block.ice.blockID,
-		Block.netherrack.blockID,
-		Block.grass.blockID,
-		Block.dirt.blockID,
-		Block.sand.blockID,
-		Block.gravel.blockID,
-		Block.snow.blockID,
-		Block.blockSnow.blockID,
-		Block.blockClay.blockID,
-		Block.tilledField.blockID,
-		Block.slowSand.blockID,
-		Block.mycelium.blockID
-	};
+	private static final Set<Block> FillerBlocks = Sets.newHashSet(Arrays.asList(
+		Blocks.cobblestone,
+		Blocks.stone_slab,
+		Blocks.stone,
+		Blocks.sandstone,
+		Blocks.mossy_cobblestone,
+		Blocks.ice,
+		Blocks.netherrack,
+		Blocks.grass,
+		Blocks.dirt,
+		Blocks.sand,
+		Blocks.gravel,
+		Blocks.snow,
+		Blocks.snow_layer,
+		Blocks.clay,
+		Blocks.farmland,
+		Blocks.mycelium
+	));
 	
-	private static final int[] OreBlocks = new int[] {
-		Block.oreIron.blockID,
-		Block.oreCoal.blockID,
-		Block.oreGold.blockID,
-		Block.oreDiamond.blockID,
-		Block.oreLapis.blockID,
-		Block.oreRedstone.blockID,
-		Block.oreRedstoneGlowing.blockID,
-		Block.blockIron.blockID,
-		Block.blockGold.blockID,
-		Block.blockDiamond.blockID,
-		Block.blockLapis.blockID
-	};
+	private static final Set<Block> OreBlocks = Sets.newHashSet(Arrays.asList(
+		Blocks.iron_ore,
+		Blocks.iron_block,
+		Blocks.coal_ore,
+		Blocks.coal_block,
+		Blocks.gold_ore,
+		Blocks.gold_block,
+		Blocks.diamond_ore,
+		Blocks.diamond_block,
+		Blocks.lapis_ore,
+		Blocks.lapis_block,
+		Blocks.redstone_ore,
+		Blocks.redstone_block
+	));
 	
-	static {
-		// sort the blocklists so we can use binary search
-		Arrays.sort(FillerBlocks);
-		Arrays.sort(OreBlocks);
-	}
-	
-	public ItemDrill(int itemId) {
-		super(itemId, OilPowerLength);
+	public ItemDrill() {
+		super(OilPowerLength);
 		
 		setMaxDamage(MaxUses);
 	}
 	
-	protected boolean isFillerBlock(Block block) {
-		return isFillerBlock(block.blockID);
-	}
-	
-	protected boolean isFillerBlock(int blockId) {
-		return Arrays.binarySearch(FillerBlocks, blockId) >= 0;
-	}
-	
-	protected boolean isOreBlock(Block block) {
-		return isOreBlock(block.blockID);
-	}
-	
-	protected boolean isOreBlock(int blockId) {
-		return Arrays.binarySearch(OreBlocks, blockId) >= 0;
-	}
-	
 	@Override
-	public boolean canHarvestBlock(Block block) {
-		return isFillerBlock(block) || isOreBlock(block);
+	public boolean canHarvestBlock(Block block, ItemStack stack) {
+		return FillerBlocks.contains(block) || OreBlocks.contains(block);
 	}
 	
 	@Override
 	public boolean hitEntity(ItemStack itemStack, EntityLivingBase entityTarget, EntityLivingBase entityUser) {
+		
 		// decrease item durability
 		itemStack.damageItem(DurabilityLostToEntity, entityUser);
 		
@@ -115,7 +101,7 @@ public abstract class ItemDrill extends ItemOilBasedTool {
 		
 		// find out which side we're hitting
 		World world = player.worldObj;
-		Block block = Block.blocksList[world.getBlockId(x, y, z)];
+		Block block = world.getBlock(x, y, z);
 		final boolean HitLiquids = false;
 		MovingObjectPosition pos = getMovingObjectPositionFromPlayer(world, player, HitLiquids);
 		if (pos == null || pos.blockX != x || pos.blockY != y || pos.blockZ != z) {
@@ -130,13 +116,14 @@ public abstract class ItemDrill extends ItemOilBasedTool {
 		}
 		
 		// dig the extra blocks
-		if (isFillerBlock(block)) {
+		if (FillerBlocks.contains(block)) {
 			for (ChunkCoordinates coords : getOtherBlocksToDig(world, x, y, z, side, player)) {
-				int blockId = world.getBlockId(coords.posX, coords.posY, coords.posZ);
-				int blockMeta = world.getBlockMetadata(coords.posX, coords.posY, coords.posZ);
-				if (isFillerBlock(blockId)) {
-					world.destroyBlock(coords.posX, coords.posY, coords.posZ, false);
-					Block.blocksList[blockId].harvestBlock(player.worldObj, player, coords.posX, coords.posY, coords.posZ, blockMeta);
+				Block otherBlock = world.getBlock(coords.posX, coords.posY, coords.posZ);
+				int otherMeta = world.getBlockMetadata(coords.posX, coords.posY, coords.posZ);
+				if (FillerBlocks.contains(otherBlock)) {
+					//    destroyBlock
+					world.func_147480_a(coords.posX, coords.posY, coords.posZ, false);
+					block.harvestBlock(player.worldObj, player, coords.posX, coords.posY, coords.posZ, otherMeta);
 				}
 			}
 		}
@@ -146,24 +133,28 @@ public abstract class ItemDrill extends ItemOilBasedTool {
 	
 	protected abstract List<ChunkCoordinates> getOtherBlocksToDig(World world, int x, int y, int z, int side, EntityPlayer player);
 	
-	@Override
-	public float getDamageVsEntity(Entity entityTarget, ItemStack itemStack) {
-		return DamageVsEntity;
-	}
+	@SuppressWarnings({ "rawtypes", "deprecation", "unchecked" })
+	public Multimap getItemAttributeModifiers() {
+        Multimap multimap = super.getItemAttributeModifiers();
+        multimap.put(
+        	SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
+        	new AttributeModifier(field_111210_e, "Tool modifier", (double)DamageVsEntity, 0)
+        );
+        return multimap;
+    }
 	
 	@Override
 	public int getItemEnchantability() {
 		return Enchantability;
 	}
 	
-	@Override
-	public float getStrVsBlock(ItemStack stack, Block block, int meta) {
-		if (isFillerBlock(block)) {
+	@Override // getStrVsBlock
+	public float func_150893_a(ItemStack stack, Block block) {
+		if (FillerBlocks.contains(block)) {
 			return FillerEfficiency;
-		} else if (isOreBlock(block)) {
+		} else if (OreBlocks.contains(block)) {
 			return OreEfficiency;
 		}
-		
-		return super.getStrVsBlock(stack, block, meta);
+		return super.func_150893_a(stack, block);
 	}
 }
