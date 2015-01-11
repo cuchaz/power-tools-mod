@@ -10,21 +10,19 @@
  ******************************************************************************/
 package cuchaz.powerTools;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import cuchaz.modsShared.blocks.BlockSet;
 import cuchaz.modsShared.blocks.BlockSide;
+import cuchaz.modsShared.blocks.Coords;
 
 public class ItemDrillWideBore extends ItemDrill {
 	
 	public ItemDrillWideBore() {
-		setUnlocalizedName("drillWideBore");
+		setUnlocalizedName("cuchaz.powerTools.drillWideBore");
 	}
 	
 	@Override
@@ -34,29 +32,29 @@ public class ItemDrillWideBore extends ItemDrill {
 	}
 	
 	@Override
-	public List<ChunkCoordinates> getOtherBlocksToDig(World world, int x, int y, int z, int side, EntityPlayer player) {
+	public BlockSet getOtherBlocksToDig(World world, int x, int y, int z, int side, EntityPlayer player) {
 		
 		// make the 8-block pattern (like the 9-block pattern, but skip 0,0)
 		int[] dim1 = { -1, -1, -1, 0, /* 0, */ 0, 1, 1, 1 };
 		int[] dim2 = { -1, 0, 1, -1, /* 0, */ 1, -1, 0, 1 };
 		
 		// make a list of blocks to dig
-		List<ChunkCoordinates> blocksToDig = new ArrayList<ChunkCoordinates>();
+		BlockSet blocksToDig = new BlockSet();
 		for (int i = 0; i < dim1.length; i++) {
 			switch (BlockSide.getById(side)) {
 				case North:
 				case South:
-					blocksToDig.add(new ChunkCoordinates(x + dim1[i], y + dim2[i], z));
+					blocksToDig.add(new Coords(x + dim1[i], y + dim2[i], z));
 				break;
 				
 				case Top:
 				case Bottom:
-					blocksToDig.add(new ChunkCoordinates(x + dim1[i], y, z + dim2[i]));
+					blocksToDig.add(new Coords(x + dim1[i], y, z + dim2[i]));
 				break;
 				
 				case East:
 				case West:
-					blocksToDig.add(new ChunkCoordinates(x, y + dim1[i], z + dim2[i]));
+					blocksToDig.add(new Coords(x, y + dim1[i], z + dim2[i]));
 				break;
 			}
 		}

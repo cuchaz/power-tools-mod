@@ -44,7 +44,7 @@ public class BlockOilRefinery extends BlockContainer {
 		setHardness(5.0F);
 		setResistance(10.0F);
 		setStepSound(Block.soundTypeMetal);
-		setBlockName("blockOilRefinery");
+		setBlockName("cuchaz.powerTools.oilRefinery");
 		setCreativeTab(CreativeTabs.tabDecorations);
 	}
 	

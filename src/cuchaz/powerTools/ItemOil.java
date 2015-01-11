@@ -19,7 +19,7 @@ public class ItemOil extends Item {
 	public ItemOil() {
 		maxStackSize = 64;
 		setCreativeTab(CreativeTabs.tabMaterials);
-		setUnlocalizedName("oil");
+		setUnlocalizedName("cuchaz.powerTools.oil");
 	}
 	
 	@Override

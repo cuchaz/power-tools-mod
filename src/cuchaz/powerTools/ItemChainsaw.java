@@ -41,7 +41,7 @@ public class ItemChainsaw extends ItemOilBasedTool {
 	public ItemChainsaw() {
 		super(OilPowerLength);
 		setMaxDamage(MaxUses);
-		setUnlocalizedName("chainsaw");
+		setUnlocalizedName("cuchaz.powerTools.chainsaw");
 	}
 	
 	@Override

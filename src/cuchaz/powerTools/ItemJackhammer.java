@@ -41,7 +41,7 @@ public class ItemJackhammer extends ItemOilBasedTool {
 	public ItemJackhammer() {
 		super(OilPowerLength);
 		setMaxDamage(MaxUses);
-		setUnlocalizedName("jackhammer");
+		setUnlocalizedName("cuchaz.powerTools.jackhammer");
 	}
 	
 	@Override

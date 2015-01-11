@@ -54,7 +54,7 @@ public class TileEntityTreeHarvester extends TileEntity {
 				
 				// is this block wood/leaves?
 				Block block = worldObj.getBlock(coords.x, coords.y, coords.z);
-				if (!isWoodBlock(block) && isLeavesBlock(block)) {
+				if (!isWoodBlock(block) && !isLeavesBlock(block)) {
 					return false;
 				}
 				
@@ -72,9 +72,6 @@ public class TileEntityTreeHarvester extends TileEntity {
 				return true;
 			}
 		}, Neighbors.Faces);
-		if (blocks == null) {
-			return;
-		}
 		
 		// sort the blocks into layers
 		

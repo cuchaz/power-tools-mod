@@ -21,9 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.oredict.OreDictionary;
-
-import com.google.common.eventbus.Subscribe;
-
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import cuchaz.modsShared.perf.DelayTimer;
@@ -58,33 +56,35 @@ public class ItemOilBasedTool extends Item {
 	}
 	
 	@Override
-	public void onUpdate(ItemStack itemStack, World world, Entity entityUser, int itemInventoryId, boolean isCurrentItem) {
+	public void onUpdate(ItemStack itemStack, World world, Entity entity, int itemInventoryId, boolean isCurrentItem) {
+		
+		// only update every so often
 		if (!m_delayTimer.isDelayedUpdate()) {
 			return;
 		}
 		
 		// get the player if possible
-		EntityPlayer player = getPlayerFromEntity(entityUser);
-		if (player == null) {
+		if (!(entity instanceof EntityPlayer)) {
 			return;
 		}
+		EntityPlayer player = (EntityPlayer)entity;
 		
 		// only update oil consumption
 		updateOilConsumption(player);
 	}
 	
 	@Override
-	public boolean onEntitySwing(EntityLivingBase entityLiving, ItemStack itemStack) {
-		// NOTE: this function seems to be purely cosmetic
+	public boolean onEntitySwing(EntityLivingBase entity, ItemStack itemStack) {
 		
+		// NOTE: this function seems to be purely cosmetic
 		final boolean AbortSwing = true;
 		final boolean AllowSwing = false;
 		
 		// get the player if possible
-		EntityPlayer player = getPlayerFromEntity(entityLiving);
-		if (player == null) {
-			return AllowSwing;
+		if (!(entity instanceof EntityPlayer)) {
+			return AbortSwing;
 		}
+		EntityPlayer player = (EntityPlayer)entity;
 		
 		if (isPowered(player)) {
 			return AllowSwing;
@@ -93,7 +93,7 @@ public class ItemOilBasedTool extends Item {
 		}
 	}
 	
-	@Subscribe
+	@SubscribeEvent
 	public void onBlockHardnessEvent(PlayerEvent.BreakSpeed event) {
 		
 		// get the player
@@ -126,10 +126,15 @@ public class ItemOilBasedTool extends Item {
 	}
 	
 	private void updateOilConsumption(EntityPlayer player) {
-		State state = getState(player);
 		
-		// consume power
-		state.powerCountdown = Math.max(state.powerCountdown - 1, 0);
+		if (player.capabilities.isCreativeMode) {
+			// don't consume power in creative mode
+			return;
+		} else {
+			// consume power in other modes
+			State state = getState(player);
+			state.powerCountdown = Math.max(state.powerCountdown - 1, 0);
+		}
 	}
 	
 	private State getState(EntityPlayer player) {
@@ -142,10 +147,16 @@ public class ItemOilBasedTool extends Item {
 	}
 	
 	private boolean isPowered(EntityPlayer player) {
-		return getState(player).powerCountdown > 0;
+		return player.capabilities.isCreativeMode || getState(player).powerCountdown > 0;
 	}
 	
 	private boolean powerUp(EntityPlayer player) {
+		
+		if (player.capabilities.isCreativeMode) {
+			// don't need oil in creative mode
+			return true;
+		}
+		
 		State state = getState(player);
 		
 		// if we're already powered, then we're already powered
@@ -197,12 +208,5 @@ public class ItemOilBasedTool extends Item {
 			}
 		}
 		return false;
-	}
-	
-	protected EntityPlayer getPlayerFromEntity(Entity entity) {
-		if (entity instanceof EntityPlayer) {
-			return (EntityPlayer)entity;
-		}
-		return null;
 	}
 }

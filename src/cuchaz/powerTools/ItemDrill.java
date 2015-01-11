@@ -11,7 +11,6 @@
 package cuchaz.powerTools;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 
 import net.minecraft.block.Block;
@@ -21,12 +20,14 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
+
+import cuchaz.modsShared.blocks.BlockSet;
+import cuchaz.modsShared.blocks.Coords;
 
 public abstract class ItemDrill extends ItemOilBasedTool {
 	
@@ -109,21 +110,21 @@ public abstract class ItemDrill extends ItemOilBasedTool {
 		}
 		int side = pos.sideHit;
 		
-		// if the block has hardness
-		if (block.getBlockHardness(world, x, y, z) != 0.0f) {
-			// decrease item durability
-			itemStack.damageItem(DurabilityLostToBlock, player);
+		if (!player.capabilities.isCreativeMode) {
+			// if the block has hardness
+			if (block.getBlockHardness(world, x, y, z) != 0.0f) {
+				// decrease item durability
+				itemStack.damageItem(DurabilityLostToBlock, player);
+			}
 		}
 		
-		// dig the extra blocks
-		if (FillerBlocks.contains(block)) {
-			for (ChunkCoordinates coords : getOtherBlocksToDig(world, x, y, z, side, player)) {
-				Block otherBlock = world.getBlock(coords.posX, coords.posY, coords.posZ);
-				int otherMeta = world.getBlockMetadata(coords.posX, coords.posY, coords.posZ);
-				if (FillerBlocks.contains(otherBlock)) {
-					//    destroyBlock
-					world.func_147480_a(coords.posX, coords.posY, coords.posZ, false);
-					block.harvestBlock(player.worldObj, player, coords.posX, coords.posY, coords.posZ, otherMeta);
+		if (!world.isRemote) {
+			// dig the extra blocks
+			if (FillerBlocks.contains(block)) {
+				for (Coords coords : getOtherBlocksToDig(world, x, y, z, side, player)) {
+					if (FillerBlocks.contains(world.getBlock(coords.x, coords.y, coords.z))) {
+						digBlock(player, coords);
+					}
 				}
 			}
 		}
@@ -131,7 +132,18 @@ public abstract class ItemDrill extends ItemOilBasedTool {
 		return AllowHarvest;
 	}
 	
-	protected abstract List<ChunkCoordinates> getOtherBlocksToDig(World world, int x, int y, int z, int side, EntityPlayer player);
+	private void digBlock(EntityPlayer player, Coords coords) {
+		
+		World world = player.worldObj;
+		Block block = world.getBlock(coords.x, coords.y, coords.z);
+		int meta = world.getBlockMetadata(coords.x, coords.y, coords.z);
+		
+		// set the block to air and drop the item
+		block.harvestBlock(world, player, coords.x, coords.y, coords.z, meta);
+		world.setBlock(coords.x, coords.y, coords.z, Blocks.air, 0, 3);
+	}
+
+	protected abstract BlockSet getOtherBlocksToDig(World world, int x, int y, int z, int side, EntityPlayer player);
 	
 	@SuppressWarnings({ "rawtypes", "deprecation", "unchecked" })
 	public Multimap getItemAttributeModifiers() {
